@@ -48,36 +48,8 @@
           </div>
           <div id="London" class="tabcontent">
               <div class="wrapper_infor" style="padding-top: 25px;">
-                <table style="width: 96%;margin-left: 2%;margin-right: 2%;">
-                  <tr>
-                    <td style="width: 5%"><img title="Giảm" onclick="editPhoneActive(\'' + 1 + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>
-                    <td style="width: 20%; text-align: center;">3</td>
-                    <td style="width: 5%"><img title="Tăng" onclick="editPhoneActive(\'' + 1 + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>
-                    <td style="width: auto; text-align: center;">Bàn thắng</td>
-                    <td style="width: 5%"><img title="Giảm" onclick="editPhoneActive(\'' + 1 + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>
-                    <td style="width: 20%; text-align: center;">1</td>
-                    <td style="width: 5%"><img title="Tăng" onclick="editPhoneActive(\'' + 1 + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>
-                  </tr>
-                  <tr>
-                    <td>Eve</td>
-                    <td>Jackson</td>
-                    <td>94</td>
-                  </tr>
-                  </table>
               </div><!--.wrapper_infor-->
           </div><!--.tabcontent-->
-          <div id="Paris" class="tabcontent">
-          </div>
-          <div id="Tokyo" class="tabcontent">
-              <div class="wrapper_tokyo">
-                  <div class="wrapper_saleCode">
-                       <div class="field_search" >
-                          <span class="add_label">Mã Sale</span>
-                          <input type="text" placeholder="Mã Sale" class="add_input add_edit txt_saleCodeUserSale" id="txt_saleCodeUserSale"/>
-                      </div>
-                  </div><!--.wrapper_saleCode-->
-              </div><!--.wrapper_tokyo-->
-          </div>
       </div><!--.wrapper_form-->
   </div><!--.wrapper_add_edit-->
 
@@ -167,73 +139,110 @@
       storageBucket: "resultsgame.appspot.com",
       messagingSenderId: "1080413171479"
      };
-     var gameId = "";
+   var gameId = "";
+   var round = "round1"; // Mặc định hiển thị kết quả Hiệp 1
    var defaultApp = firebase.initializeApp(config);
    var defaultDatabase = defaultApp.database();
    var ref = defaultDatabase.ref("games");
   //  var refFoul = defaultDatabase.ref("games/-Kw_yHgkmL0f0LZK0vyN").update({ awayname: "Chelsea" });
    // var refFoul = defaultDatabase.ref("games/-Kw_yHgkmL0f0LZK0vyN/name").set( "Chelsea" );
+   $('.close').click(function(){
+      $('.wrapper_add_edit').css("display", "none");
+   });
    $('.btnAdd').click(function(){
       $('.wrapper_add_edit').css("display", "block");
-      var refid = ref.push().set({
-        "awayname" : "",
-        "createdate" : getToday(),
-        "createuser" : "",
-        "deleted" : 0,
-        "homename" : "",
-        "name" : "",
-        "round1" : {
-          "away" : {
-            "corners" : 0,
-            "fouls" : 0,
-            "goals" : 0,
-            "offsides" : 0,
-            "possession" : 0,
-            "redcard" : 0,
-            "shots" : 0,
-            "shotsontarget" : 0,
-            "yellowcard" : 0
-          },
-          "home" : {
-            "corners" : 0,
-            "fouls" : 0,
-            "goals" : 0,
-            "offsides" : 0,
-            "possession" : 0,
-            "redcard" : 0,
-            "shots" : 0,
-            "shotsontarget" : 0,
-            "yellowcard" : 0
-          }
-        },
-        "round2" : {
-          "away" : {
-            "corners" : 0,
-            "fouls" : 0,
-            "goals" : 0,
-            "offsides" : 0,
-            "possession" : 0,
-            "redcard" : 0,
-            "shots" : 0,
-            "shotsontarget" : 0,
-            "yellowcard" : 0
-          },
-          "home" : {
-            "corners" : 0,
-            "fouls" : 0,
-            "offsides" : 0,
-            "possession" : 0,
-            "redcard" : 0,
-            "shots" : 0,
-            "shotsontarget" : 0,
-            "yellowcard" : 0
-          }
-        },
-        "stadium" : "",
-        "updatedate" : "",
-        "updateuser" : ""
+      var refNew = ref.push().set({
+    "awayname" : "",
+    "createdate" : getToday(),
+    "createuser" : "",
+    "deleted" : 0,
+    "homename" : "",
+    "name" : "",
+    "round1" : {
+        "corners" : {
+			"away" : 0,
+			"home" : 0
+		},
+		"fouls" : {
+			"away" : 0,
+			"home" : 0
+		},
+		"goals" : {
+			"away" : 0,
+			"home" : 0
+		},
+		"offsides" : {
+			"away" : 0,
+			"home" : 0
+		},
+		"possession" : {
+			"away" : 0,
+			"home" : 0
+		},
+		"redcard" : {
+			"away" : 0,
+			"home" : 0
+		},
+			"shots" : {
+			"away" : 0,
+			"home" : 0
+		},
+			"shotsontarget" : {
+			"away" : 0,
+			"home" : 0
+		},
+			"yellowcard" : {
+			"away" : 0,
+			"home" : 0
+		}
+    },
+    "round2" : {
+        "corners" : {
+			"away" : 0,
+			"home" : 0
+		},
+		"fouls" : {
+			"away" : 0,
+			"home" : 0
+		},
+		"goals" : {
+			"away" : 0,
+			"home" : 0
+		},
+		"offsides" : {
+			"away" : 0,
+			"home" : 0
+		},
+		"possession" : {
+			"away" : 0,
+			"home" : 0
+		},
+		"redcard" : {
+			"away" : 0,
+			"home" : 0
+		},
+			"shots" : {
+			"away" : 0,
+			"home" : 0
+		},
+			"shotsontarget" : {
+			"away" : 0,
+			"home" : 0
+		},
+			"yellowcard" : {
+			"away" : 0,
+			"home" : 0
+		}
+    },
+    "stadium" : "",
+    "updatedate" : "",
+    "updateuser" : ""
+  });
+      ref.limitToLast(1).on("child_added", function(snapshot, prevChildKey) {
+        var newPost = snapshot.val();
+        gameId =  snapshot.key;
+        // console.log("Previous Post ID: " + prevChildKey);
       });
-      alert(refid);
    });
 
    // Attach an asynchronous callback to read the data at our posts reference
@@ -254,7 +263,7 @@
         str += '<td>'+childSnapshot.val().name+'</td>';
         str += '<td>'+childSnapshot.val().createdate+'</td>';
         str += '<td>'+childSnapshot.val().stadium+'</td>';
-        str += '<td><img title="Sửa" onclick="editPhoneActive(\'' + 1 + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/edit1.png"/><img title="Xóa" onclick="deleteUser(\'' + 2+ '\',\'Bạn muốn xóa số điện thoại này?\')" style="height: 25px; width: 25px; cursor:pointer;" class="img_delete" src="img/delete1.png"/></td>';
+        str += '<td><img title="Sửa" onclick="editGameDetails(\'' + childSnapshot.key + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/edit1.png"/><img title="Xóa" onclick="deleteUser(\'' + 2+ '\',\'Bạn muốn xóa số điện thoại này?\')" style="height: 25px; width: 25px; cursor:pointer;" class="img_delete" src="img/delete1.png"/></td>';
         str += '</tr>';
       }
 
@@ -293,24 +302,45 @@
 
   }
   function getGameDetails(round){
-    alert("getGameDetails"+gameId);
+    round = round;
     var refRound = defaultDatabase.ref("games/"+gameId+"/"+round);
-    console.log(JSON.stringify(refRound));
-    refRound.on('value', function(snapshot) {
+    refRound.on("value", function(snapshot) {
       var arrStr = "";
       arrStr += '<table style="width: 96%;margin-left: 2%;margin-right: 2%;">';
-      arrStr += '<tr>';
-      arrStr += '<td style="width: 5%"><img title="Giảm" onclick="editPhoneActive(\'' + 1 + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-      arrStr += '<td style="width: 20%; text-align: center;">'+snapshot.val().home.goals+'</td>';
-      arrStr += '<td style="width: 5%"><img title="Tăng" onclick="editPhoneActive(\'' + 1 + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
-      arrStr += '<td style="width: auto; text-align: center;">Bàn thắng</td>';
-      arrStr += '<td style="width: 5%"><img title="Giảm" onclick="editPhoneActive(\'' + 1 + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-      arrStr += '<td style="width: 20%; text-align: center;">'+snapshot.val().away.goals+'</td>';
-      arrStr += '<td style="width: 5%"><img title="Tăng" onclick="editPhoneActive(\'' + 1 + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
-      arrStr += '</tr>';
+      snapshot.forEach(function(e){
+        var validateKey = "";
+        if(e.key == "corners") validateKey = "Phạt góc";
+        if(e.key == "fouls") validateKey = "Phạm lỗi";
+        if(e.key == "goals") validateKey = "Bàn thắng";
+        if(e.key == "offsides") validateKey = "Việt vị";
+        if(e.key == "possession") validateKey = "Kiểm soát bóng";
+        if(e.key == "redcard") validateKey = "Thẻ đỏ";
+        if(e.key == "shots") validateKey = "Cú sút";
+        if(e.key == "shotsontarget") validateKey = "Cú sút trúng đích";
+        if(e.key == "yellowcard") validateKey = "Thẻ vàng";
+        arrStr += '<tr>';
+        arrStr += '<td style="width: 5%"><img title="Giảm" onclick="updateGameDetails(\'home\',\''+ e.key +'\',\''+(Number(e.val().home)-1)+'\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+        arrStr += '<td style="width: 20%; text-align: center;">'+ e.val().home +'</td>';
+        arrStr += '<td style="width: 5%"><img title="Tăng" onclick="updateGameDetails(\'home\',\''+ e.key +'\',\''+(Number(e.val().home)+1)+'\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+        arrStr += '<td style="width: auto; text-align: center;">'+validateKey+'</td>';
+        arrStr += '<td style="width: 5%"><img title="Giảm" onclick="updateGameDetails(\'away\',\''+ e.key +'\',\''+(Number(e.val().away)-1)+'\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+        arrStr += '<td style="width: 20%; text-align: center;">'+ e.val().away +'</td>';
+        arrStr += '<td style="width: 5%"><img title="Tăng" onclick="updateGameDetails(\'away\',\''+ e.key +'\',\''+(Number(e.val().away)+1)+'\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+        arrStr += '</tr>';
+      });
       arrStr += '  </table>';
-      $('tabcontent').html(arrStr);
+      $('.tabcontent').html(arrStr);
     });
+  }
+  // Sửa Game
+  function editGameDetails(Id){
+    gameId = Id;
+    $('.wrapper_add_edit').css("display", "block");
+    getGameDetails('round1');
+  }
+  function updateGameDetails(typeTeam, field, val){
+    if(Number(val) >= 0)
+    var refRound = defaultDatabase.ref("games/"+gameId+"/"+round+"/"+field+"/"+typeTeam).set(val.toString());
   }
      </script>
 
