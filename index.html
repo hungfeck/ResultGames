@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="UTF-8">
+		<title>VTVCabChatRealtime</title>
+		<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-database.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-firestore.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-messaging.js"></script>
+ 	 <script>
+	 var config = {
+		 apiKey: "AIzaSyBpawnGQ1WPtyOHODWAxuyG9dy9yuUThOY",
+		 authDomain: "resultsgame.firebaseapp.com",
+		 databaseURL: "https://resultsgame.firebaseio.com",
+		 projectId: "resultsgame",
+		 storageBucket: "resultsgame.appspot.com",
+		 messagingSenderId: "1080413171479"
+		};
+		var defaultApp = firebase.initializeApp(config);
+
+console.log(defaultApp);  // "[DEFAULT]"
+// You can retrieve services via the defaultApp variable...
+var defaultDatabase = defaultApp.database();
+var ref = defaultDatabase.ref("games");
+var refFoul = defaultDatabase.ref("games/-Kw_yHgkmL0f0LZK0vyN").update({ awayname: "Chelsea" });
+// var refFoul = defaultDatabase.ref("games/-Kw_yHgkmL0f0LZK0vyN/name").set( "Chelsea" );
+// ref.push().set({
+// 		 "away" : {
+// 			 "corners" : 6,
+// 			 "fouls" : 4,
+// 			 "name" : "Hải Phòng",
+// 			 "offsides" : 6,
+// 	 	 		"timepossession" : 20,
+// 			 "possession" : 40,
+// 			 "redcard" : 0,
+// 			 "shots" : 3,
+// 			 "shotsontarget" : 1,
+// 			 "yellowcard" : 3
+// 		 },
+// 		 "home" : {
+// 			 "corners" : 5,
+// 			 "fouls" : 3,
+// 			 "name" : "Hà Nội",
+// 			 "offsides" : 5,
+// 	 	 		"timepossession" : 25,
+// 			 "possession" : 60,
+// 			 "redcard" : 0,
+// 			 "shots" : 5,
+// 			 "shotsontarget" : 3,
+// 			 "yellowcard" : 1
+// 		 },
+// 		 "name" : "Tên",
+// 	 		"stadium": "Lạch Tray"
+// });
+// ref.on("child_added", function(snapshot, prevChildKey) {
+// });
+// Attach an asynchronous callback to read the data at our posts reference
+// ref.on("value", function(snapshot) {
+// 	var newPost=snapshot.val();
+// 	var name = newPost["-KwYxaTCu8Aa_D9P10r-"].away.name;
+// 	console.log("id: " + JSON.stringify(newPost["-KwYxaTCu8Aa_D9P10r-"].away.name));
+// 	$('.name').html(name);
+// 	var str = "";
+// 		snapshot.forEach(function(childSnapshot) {
+// 	// 	console.log("id: " + childSnapshot.key);
+// 	// 	console.log("id: " + JSON.stringify(childSnapshot));
+// 	// 	console.log("id: " + childSnapshot.val().id);
+// 		str += '<div class="game">';
+// 		str += '<div class="game">';
+// 		str += '<div class="game">';
+// 		str += '</div>';
+//   });
+//
+// });
+ 		</script>
+	</head>
+	<body>
+		<div class="game">
+			<table style="width:100%">
+			  <tr>
+			    <td>+</td>
+			    <td>5</td>
+			    <td>-</td>
+					<td>Cơ hội</td>
+			    <td>-</td>
+			    <td>4</td>
+					<td class="btnUp" id="">+</td>
+			  </tr>
+			</table>
+			<span>Tên đội nhà</span>
+			<p class="name"></p>
+			<input type="text" class="name" />
+		</div><!--.game-->
+		<!-- <script  src="js/index.js"></script>  -->
+	</body>
+</html>
