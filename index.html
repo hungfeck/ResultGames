@@ -1,98 +1,302 @@
 <!DOCTYPE html>
-<html >
-	<head>
-		<meta charset="UTF-8">
-		<title>VTVCabChatRealtime</title>
-		<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>VTVCAB</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="vendor/simple-line-icons/css/simple-line-icons.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="device-mockups/device-mockups.css">
+
+    <!-- Custom styles for this template -->
+    <link href="css/new-age.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-app.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-auth.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-database.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-firestore.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-messaging.js"></script>
- 	 <script>
-	 var config = {
-		 apiKey: "AIzaSyBpawnGQ1WPtyOHODWAxuyG9dy9yuUThOY",
-		 authDomain: "resultsgame.firebaseapp.com",
-		 databaseURL: "https://resultsgame.firebaseio.com",
-		 projectId: "resultsgame",
-		 storageBucket: "resultsgame.appspot.com",
-		 messagingSenderId: "1080413171479"
-		};
-		var defaultApp = firebase.initializeApp(config);
 
-console.log(defaultApp);  // "[DEFAULT]"
-// You can retrieve services via the defaultApp variable...
-var defaultDatabase = defaultApp.database();
-var ref = defaultDatabase.ref("games");
-var refFoul = defaultDatabase.ref("games/-Kw_yHgkmL0f0LZK0vyN").update({ awayname: "Chelsea" });
-// var refFoul = defaultDatabase.ref("games/-Kw_yHgkmL0f0LZK0vyN/name").set( "Chelsea" );
-// ref.push().set({
-// 		 "away" : {
-// 			 "corners" : 6,
-// 			 "fouls" : 4,
-// 			 "name" : "Hải Phòng",
-// 			 "offsides" : 6,
-// 	 	 		"timepossession" : 20,
-// 			 "possession" : 40,
-// 			 "redcard" : 0,
-// 			 "shots" : 3,
-// 			 "shotsontarget" : 1,
-// 			 "yellowcard" : 3
-// 		 },
-// 		 "home" : {
-// 			 "corners" : 5,
-// 			 "fouls" : 3,
-// 			 "name" : "Hà Nội",
-// 			 "offsides" : 5,
-// 	 	 		"timepossession" : 25,
-// 			 "possession" : 60,
-// 			 "redcard" : 0,
-// 			 "shots" : 5,
-// 			 "shotsontarget" : 3,
-// 			 "yellowcard" : 1
-// 		 },
-// 		 "name" : "Tên",
-// 	 		"stadium": "Lạch Tray"
-// });
-// ref.on("child_added", function(snapshot, prevChildKey) {
-// });
-// Attach an asynchronous callback to read the data at our posts reference
-// ref.on("value", function(snapshot) {
-// 	var newPost=snapshot.val();
-// 	var name = newPost["-KwYxaTCu8Aa_D9P10r-"].away.name;
-// 	console.log("id: " + JSON.stringify(newPost["-KwYxaTCu8Aa_D9P10r-"].away.name));
-// 	$('.name').html(name);
-// 	var str = "";
-// 		snapshot.forEach(function(childSnapshot) {
-// 	// 	console.log("id: " + childSnapshot.key);
-// 	// 	console.log("id: " + JSON.stringify(childSnapshot));
-// 	// 	console.log("id: " + childSnapshot.val().id);
-// 		str += '<div class="game">';
-// 		str += '<div class="game">';
-// 		str += '<div class="game">';
-// 		str += '</div>';
-//   });
-//
-// });
- 		</script>
-	</head>
-	<body>
-		<div class="game">
-			<table style="width:100%">
-			  <tr>
-			    <td>+</td>
-			    <td>5</td>
-			    <td>-</td>
-					<td>Cơ hội</td>
-			    <td>-</td>
-			    <td>4</td>
-					<td class="btnUp" id="">+</td>
-			  </tr>
-			</table>
-			<span>Tên đội nhà</span>
-			<p class="name"></p>
-			<input type="text" class="name" />
-		</div><!--.game-->
-		<!-- <script  src="js/index.js"></script>  -->
-	</body>
+
+  </head>
+
+  <body id="page-top">
+    <div class="wrapper_add_edit" id="wrapper_add_edit" style="height: 100%; padding-top: 0%">
+      <div class="wrapper_form" id="wrapper_form" style="margin-top: 70px; ">
+          <div class="close" style="padding-right: 10px; cursor: pointer;">
+              <h3 style="float: right;">&times;</h3>
+          </div>
+          <div class="tab">
+              <div class="tablinks tablinks_details" onclick="openCity(event, 'London')" id="defaultOpen">Hiệp 1</div>
+              <div class="tablinks tablinks_manageUserSale" onclick="openCity(event, 'Tokyo')">Hiệp 2</div>
+              <div class="tablinks tablinks_manageUserGroup" onclick="openCity(event, 'Paris')">Tất cả</div>
+          </div>
+          <div id="London" class="tabcontent">
+              <div class="wrapper_infor" style="padding-top: 25px;">
+                <table style="width: 96%;margin-left: 2%;margin-right: 2%;">
+                  <tr>
+                    <td style="width: 5%"><img title="Giảm" onclick="editPhoneActive(\'' + 1 + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>
+                    <td style="width: 20%; text-align: center;">3</td>
+                    <td style="width: 5%"><img title="Tăng" onclick="editPhoneActive(\'' + 1 + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>
+                    <td style="width: auto; text-align: center;">Bàn thắng</td>
+                    <td style="width: 5%"><img title="Giảm" onclick="editPhoneActive(\'' + 1 + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>
+                    <td style="width: 20%; text-align: center;">1</td>
+                    <td style="width: 5%"><img title="Tăng" onclick="editPhoneActive(\'' + 1 + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>
+                  </tr>
+                  <tr>
+                    <td>Eve</td>
+                    <td>Jackson</td>
+                    <td>94</td>
+                  </tr>
+                  </table>
+              </div><!--.wrapper_infor-->
+          </div><!--.tabcontent-->
+          <div id="Paris" class="tabcontent">
+          </div>
+          <div id="Tokyo" class="tabcontent">
+              <div class="wrapper_tokyo">
+                  <div class="wrapper_saleCode">
+                       <div class="field_search" >
+                          <span class="add_label">Mã Sale</span>
+                          <input type="text" placeholder="Mã Sale" class="add_input add_edit txt_saleCodeUserSale" id="txt_saleCodeUserSale"/>
+                      </div>
+                  </div><!--.wrapper_saleCode-->
+              </div><!--.wrapper_tokyo-->
+          </div>
+      </div><!--.wrapper_form-->
+  </div><!--.wrapper_add_edit-->
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav" style="background: #0072C6;">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">VTVCAB</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <!-- Menu -->
+          <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#download">Download</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#features">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <header class="masthead">
+      <div class="container h-100">
+        <div class="row h-100 " style="background: white; margin-top: 60px;">
+          <div class="col-lg-12 ">
+            <button type="button" class="btn btn-primary btnAdd">Thêm mới</button>
+          </div>
+          <div class="col-lg-12 content">
+            <div class="header-content mx-auto">
+            </div>
+          </div>
+          <div class="col-lg-5 my-auto">
+            <div class="device-container">
+              <div class="device-mockup iphone6_plus portrait white">
+                <div class="device">
+                  <div class="screen">
+                  </div>
+                  <div class="button">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2017 Start Bootstrap. All Rights Reserved.</p>
+        <ul class="list-inline">
+          <li class="list-inline-item">
+            <a href="#">Privacy</a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#">Terms</a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#">FAQ</a>
+          </li>
+        </ul>
+      </div>
+    </footer>
+    <input type="text" class="txtRound">
+    <input type="text" class="txtGameId">
+
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper/popper.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="js/new-age.min.js"></script>
+    <script>
+    var config = {
+      apiKey: "AIzaSyBpawnGQ1WPtyOHODWAxuyG9dy9yuUThOY",
+      authDomain: "resultsgame.firebaseapp.com",
+      databaseURL: "https://resultsgame.firebaseio.com",
+      projectId: "resultsgame",
+      storageBucket: "resultsgame.appspot.com",
+      messagingSenderId: "1080413171479"
+     };
+   var defaultApp = firebase.initializeApp(config);
+   var defaultDatabase = defaultApp.database();
+   var ref = defaultDatabase.ref("games");
+  //  var refFoul = defaultDatabase.ref("games/-Kw_yHgkmL0f0LZK0vyN").update({ awayname: "Chelsea" });
+   // var refFoul = defaultDatabase.ref("games/-Kw_yHgkmL0f0LZK0vyN/name").set( "Chelsea" );
+   $('.btnAdd').click(function(){
+      $('.wrapper_add_edit').css("display", "block");
+      var newRef = ref.push().set({
+        "awayname" : "",
+        "createdate" : getToday(),
+        "createuser" : "",
+        "deleted" : 0,
+        "homename" : "",
+        "name" : "",
+        "round1" : {
+          "away" : {
+            "corners" : 0,
+            "fouls" : 0,
+            "goals" : 0,
+            "offsides" : 0,
+            "possession" : 0,
+            "redcard" : 0,
+            "shots" : 0,
+            "shotsontarget" : 0,
+            "yellowcard" : 0
+          },
+          "home" : {
+            "corners" : 0,
+            "fouls" : 0,
+            "goals" : 0,
+            "offsides" : 0,
+            "possession" : 0,
+            "redcard" : 0,
+            "shots" : 0,
+            "shotsontarget" : 0,
+            "yellowcard" : 0
+          }
+        },
+        "round2" : {
+          "away" : {
+            "corners" : 0,
+            "fouls" : 0,
+            "goals" : 0,
+            "offsides" : 0,
+            "possession" : 0,
+            "redcard" : 0,
+            "shots" : 0,
+            "shotsontarget" : 0,
+            "yellowcard" : 0
+          },
+          "home" : {
+            "corners" : 0,
+            "fouls" : 0,
+            "offsides" : 0,
+            "possession" : 0,
+            "redcard" : 0,
+            "shots" : 0,
+            "shotsontarget" : 0,
+            "yellowcard" : 0
+          }
+        },
+        "stadium" : "",
+        "updatedate" : "",
+        "updateuser" : ""
+      });
+      // ref.on("child_added", function(snapshot, prevChildKey) {
+      // });
+      $('.txtRound').val(newRef);
+   });
+
+   // Attach an asynchronous callback to read the data at our posts reference
+   ref.on("value", function(snapshot) {
+   	var newPost=snapshot.val();
+   	var str = "";
+    str += '<table style="width:100%">';
+    str += '<tr>';
+    str += '<th>Trận đấu</th>';
+    str += '<th>Thời gian</th>';
+    str += '<th>Sân vận động</th>';
+    str += '<th>Hành động</th>';
+    str += '</tr>';
+   		snapshot.forEach(function(childSnapshot) {
+      if(childSnapshot.val().deleted == "0")
+      {
+        str += '<tr>';
+        str += '<td>'+childSnapshot.val().name+'</td>';
+        str += '<td>'+childSnapshot.val().createdate+'</td>';
+        str += '<td>'+childSnapshot.val().stadium+'</td>';
+        str += '<td><img title="Sửa" onclick="editPhoneActive(\'' + 1 + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/edit1.png"/><img title="Xóa" onclick="deleteUser(\'' + 2+ '\',\'Bạn muốn xóa số điện thoại này?\')" style="height: 25px; width: 25px; cursor:pointer;" class="img_delete" src="img/delete1.png"/></td>';
+        str += '</tr>';
+      }
+
+     });
+     str += '</table>';
+     $('.content').html(str);
+   });
+
+   function getToday(){
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth()+1; //January is 0!
+      var yyyy = today.getFullYear();
+      var mn = today.getMinutes();
+      var h = today.getHours();
+      if(dd<10) {
+        dd = '0'+dd
+      }
+      if(mm<10) {
+        mm = '0'+mm
+      }
+      return today = dd + '/' + mm + '/' + yyyy + ' ' +h+ ':'+mn;
+   }
+   function openCity(evt, cityName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+  }
+     </script>
+
+  </body>
+
 </html>
