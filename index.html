@@ -47,6 +47,20 @@
               <div class="tablinks tablinks_manageUserGroup" onclick="getGameDetails('all')">Tất cả</div>
           </div>
           <div id="London" class="tabcontent">
+            <div class="nameclubs">
+              <div class="wrapper_club" style="float: left; width: 50%;">
+                <span>Đội nhà</span>
+                <select class="homeclub club">
+                </select>
+              </div>
+              <div class="wrapper_club" style="float: left">
+                <span>Đội khách</span>
+                <select class="awayclub club">
+                </select>
+              </div>
+            </div>
+            <div class="stadium">
+            </div>
               <div class="wrapper_infor" style="padding-top: 25px;">
               </div><!--.wrapper_infor-->
           </div><!--.tabcontent-->
@@ -79,8 +93,8 @@
 
     <header class="masthead">
       <div class="container h-100">
-        <div class="row h-100 " style="background: white; margin-top: 60px;">
-          <div class="col-lg-12 ">
+        <div class="row h-100 " style="background: white; margin-top: 56px;">
+          <div class="col-lg-12 " style="padding-top: 20px; padding-bottom: 20px; ">
             <button type="button" class="btn btn-primary btnAdd">Thêm mới</button>
           </div>
           <div class="col-lg-12 content">
@@ -144,103 +158,118 @@
    var defaultApp = firebase.initializeApp(config);
    var defaultDatabase = defaultApp.database();
    var ref = defaultDatabase.ref("games");
+   var h1 = document.getElementById('timehome'),
+     start = document.getElementById('starthome'),
+     seconds = 0, minutes = 0, hours = 0, secondsaway = 0, minutesaway = 0, hoursaway = 0,
+     t,taway;
   //  var refFoul = defaultDatabase.ref("games/-Kw_yHgkmL0f0LZK0vyN").update({ awayname: "Chelsea" });
    // var refFoul = defaultDatabase.ref("games/-Kw_yHgkmL0f0LZK0vyN/name").set( "Chelsea" );
+   loadClub();
+  //  var refte = defaultDatabase.ref("clubs");
+  //  var refclub = refte.push().set({
+  //    "name": "Hà Nội",
+  //    "stadium": "Hàng Đẫy",
+  //    "national": "V League"
+  //  });
+
    $('.close').click(function(){
       $('.wrapper_add_edit').css("display", "none");
+      clearTimeout(t);
+      clearTimeout(taway);
    });
    $('.btnAdd').click(function(){
       $('.wrapper_add_edit').css("display", "block");
       var refNew = ref.push().set({
-    "awayname" : "",
-    "createdate" : getToday(),
-    "createuser" : "",
-    "deleted" : 0,
-    "homename" : "",
-    "name" : "",
-    "round1" : {
+      "awayname" : "",
+      "createdate" : getToday(),
+      "createuser" : "",
+      "deleted" : 0,
+      "homename" : "",
+      "name" : "",
+      "round1" : {
         "corners" : {
-			"away" : 0,
-			"home" : 0
-		},
-		"fouls" : {
-			"away" : 0,
-			"home" : 0
-		},
-		"goals" : {
-			"away" : 0,
-			"home" : 0
-		},
-		"offsides" : {
-			"away" : 0,
-			"home" : 0
-		},
-		"possession" : {
-			"away" : 0,
-			"home" : 0
-		},
-		"redcard" : {
-			"away" : 0,
-			"home" : 0
-		},
-			"shots" : {
-			"away" : 0,
-			"home" : 0
-		},
-			"shotsontarget" : {
-			"away" : 0,
-			"home" : 0
-		},
-			"yellowcard" : {
-			"away" : 0,
-			"home" : 0
-		}
-    },
-    "round2" : {
+          "away" : 0,
+          "home" : 0
+        },
+        "fouls" : {
+          "away" : 0,
+          "home" : 0
+        },
+        "goals" : {
+          "away" : 0,
+          "home" : 0
+        },
+        "offsides" : {
+          "away" : 0,
+          "home" : 0
+        },
+        "possession" : {
+          "away" : "00:00:00",
+          "home" : "00:00:00"
+        },
+        "redcard" : {
+          "away" : 0,
+          "home" : 0
+        },
+        "shots" : {
+          "away" : 0,
+          "home" : 0
+        },
+        "shotsontarget" : {
+          "away" : 0,
+          "home" : 0
+        },
+        "yellowcard" : {
+          "away" : 0,
+          "home" : 0
+        }
+      },
+      "round2" : {
         "corners" : {
-			"away" : 0,
-			"home" : 0
-		},
-		"fouls" : {
-			"away" : 0,
-			"home" : 0
-		},
-		"goals" : {
-			"away" : 0,
-			"home" : 0
-		},
-		"offsides" : {
-			"away" : 0,
-			"home" : 0
-		},
-		"possession" : {
-			"away" : 0,
-			"home" : 0
-		},
-		"redcard" : {
-			"away" : 0,
-			"home" : 0
-		},
-			"shots" : {
-			"away" : 0,
-			"home" : 0
-		},
-			"shotsontarget" : {
-			"away" : 0,
-			"home" : 0
-		},
-			"yellowcard" : {
-			"away" : 0,
-			"home" : 0
-		}
-    },
-    "stadium" : "",
-    "updatedate" : "",
-    "updateuser" : ""
-  });
+          "away" : 0,
+          "home" : 0
+        },
+        "fouls" : {
+          "away" : 0,
+          "home" : 0
+        },
+        "goals" : {
+          "away" : 0,
+          "home" : 0
+        },
+        "offsides" : {
+          "away" : 0,
+          "home" : 0
+        },
+        "possession" : {
+          "away" : "00:00:00",
+          "home" : "00:00:00"
+        },
+        "redcard" : {
+          "away" : 0,
+          "home" : 0
+        },
+        "shots" : {
+          "away" : 0,
+          "home" : 0
+        },
+        "shotsontarget" : {
+          "away" : 0,
+          "home" : 0
+        },
+        "yellowcard" : {
+          "away" : 0,
+          "home" : 0
+        }
+      },
+      "stadium" : "",
+      "updatedate" : "",
+      "updateuser" : ""
+    });
       ref.limitToLast(1).on("child_added", function(snapshot, prevChildKey) {
         var newPost = snapshot.val();
         gameId =  snapshot.key;
+        getGameDetails('round1');
         // console.log("Previous Post ID: " + prevChildKey);
       });
    });
@@ -301,36 +330,73 @@
       evt.currentTarget.className += " active";
 
   }
-  function getGameDetails(round){
-    round = round;
+  function getGameDetails(roundchange){
+    round = roundchange;
+    clearTimeout(t);
+    clearTimeout(taway);
     var refRound = defaultDatabase.ref("games/"+gameId+"/"+round);
+
     refRound.on("value", function(snapshot) {
       var arrStr = "";
+      var arrPossession = "";
+
       arrStr += '<table style="width: 96%;margin-left: 2%;margin-right: 2%;">';
+      arrStr += '<tr>';
+      arrStr += '<td colspan="3" style=" padding: 5px 0px; text-align: center;">Hà Nội ACB</td>';
+      arrStr += '<td colspan="1" style=" text-align: center; padding: 5px 0px;"></td>';
+      arrStr += '<td colspan="3" style="padding: 5px 0px; text-align: center;">Hải Phòng</td>';
+      arrStr += '</tr>';
       snapshot.forEach(function(e){
-        var validateKey = "";
-        if(e.key == "corners") validateKey = "Phạt góc";
-        if(e.key == "fouls") validateKey = "Phạm lỗi";
-        if(e.key == "goals") validateKey = "Bàn thắng";
-        if(e.key == "offsides") validateKey = "Việt vị";
-        if(e.key == "possession") validateKey = "Kiểm soát bóng";
-        if(e.key == "redcard") validateKey = "Thẻ đỏ";
-        if(e.key == "shots") validateKey = "Cú sút";
-        if(e.key == "shotsontarget") validateKey = "Cú sút trúng đích";
-        if(e.key == "yellowcard") validateKey = "Thẻ vàng";
-        arrStr += '<tr>';
-        arrStr += '<td style="width: 5%"><img title="Giảm" onclick="updateGameDetails(\'home\',\''+ e.key +'\',\''+(Number(e.val().home)-1)+'\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-        arrStr += '<td style="width: 20%; text-align: center;">'+ e.val().home +'</td>';
-        arrStr += '<td style="width: 5%"><img title="Tăng" onclick="updateGameDetails(\'home\',\''+ e.key +'\',\''+(Number(e.val().home)+1)+'\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
-        arrStr += '<td style="width: auto; text-align: center;">'+validateKey+'</td>';
-        arrStr += '<td style="width: 5%"><img title="Giảm" onclick="updateGameDetails(\'away\',\''+ e.key +'\',\''+(Number(e.val().away)-1)+'\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-        arrStr += '<td style="width: 20%; text-align: center;">'+ e.val().away +'</td>';
-        arrStr += '<td style="width: 5%"><img title="Tăng" onclick="updateGameDetails(\'away\',\''+ e.key +'\',\''+(Number(e.val().away)+1)+'\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
-        arrStr += '</tr>';
+        if (e.key == "possession") {
+          var valHome = validatePossession('home',e.val().away, e.val().home);
+          var valAway = validatePossession('away',e.val().away, e.val().home);
+          var arrHome = e.val().home.split(":");
+          var arrAway = e.val().away.split(":");
+          hours = Number(arrHome[0]); minutes = Number(arrHome[1]) ; seconds = Number(arrHome[2]);
+          hoursaway = Number(arrAway[0]); minutesaway = Number(arrAway[1]) ; secondsaway = Number(arrAway[2]);
+
+          arrPossession += '<tr>';
+          arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">'+valHome+'</span></td>';
+          arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timehome"><time>'+e.val().home+'</span></td>';
+          arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="" onclick="timer()" style="height: 25px; width: 25px;cursor:pointer;" id="starthome" class="img_delete" src="img/play.png"/></td>';
+          arrPossession += '<td style="width: auto; text-align: center; padding: 5px 0px;">Kiểm soát bóng</td>';
+          arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="" onclick="timeraway()" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/play.png"/></td>';
+          arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timeraway" ><time>'+e.val().away+'</time></span></td>';
+          arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">'+valAway+'</span></td>';
+          arrPossession += '</tr>';
+          arrPossession += '<tr><td colspan="8" style="padding: 5px 0px; text-align: center;"><img title="" onclick="pauseTime()" style="height: 40px; width: 40px;cursor:pointer;" id="starthome" class="img_delete" src="img/pause.png"/></td></tr>';
+        }
+        else {
+          var validateKey = "";
+          if(e.key == "corners") validateKey = "Phạt góc";
+          if(e.key == "fouls") validateKey = "Phạm lỗi";
+          if(e.key == "goals") validateKey = "Bàn thắng";
+          if(e.key == "offsides") validateKey = "Việt vị";
+          if(e.key == "possession") validateKey = "Kiểm soát bóng";
+          if(e.key == "redcard") validateKey = "Thẻ đỏ";
+          if(e.key == "shots") validateKey = "Cú sút";
+          if(e.key == "shotsontarget") validateKey = "Cú sút trúng đích";
+          if(e.key == "yellowcard") validateKey = "Thẻ vàng";
+          arrStr += '<tr>';
+          arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'home\',\''+ e.key +'\',\''+(Number(e.val().home)-1)+'\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+          arrStr += '<td style="width: 15%; text-align: center; padding: 5px 0px;">'+ e.val().home +'</td>';
+          arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'home\',\''+ e.key +'\',\''+(Number(e.val().home)+1)+'\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+          arrStr += '<td style="width: auto; text-align: center; padding: 5px 0px;">'+validateKey+'</td>';
+          arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'away\',\''+ e.key +'\',\''+(Number(e.val().away)-1)+'\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+          arrStr += '<td style="width: 15%; text-align: center; padding: 5px 0px;">'+ e.val().away +'</td>';
+          arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'away\',\''+ e.key +'\',\''+(Number(e.val().away)+1)+'\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+          arrStr += '</tr>';
+        }
+
       });
+      arrStr = arrStr + arrPossession;
       arrStr += '  </table>';
-      $('.tabcontent').html(arrStr);
+      $('.wrapper_infor').html(arrStr);
     });
+  }
+  function pauseTime(){
+    clearTimeout(t);
+    clearTimeout(taway);
   }
   // Sửa Game
   function editGameDetails(Id){
@@ -340,7 +406,104 @@
   }
   function updateGameDetails(typeTeam, field, val){
     if(Number(val) >= 0)
-    var refRound = defaultDatabase.ref("games/"+gameId+"/"+round+"/"+field+"/"+typeTeam).set(val.toString());
+    var refRound = defaultDatabase.ref("games/"+gameId+"/"+round+"/"+field+"/"+typeTeam).set(val);
+  }
+  function updateGamePossession(typeTeam, val){
+
+    var refRound = defaultDatabase.ref("games/"+gameId+"/"+round+"/possession/"+typeTeam).set(val);
+  }
+  // Đếm giờ
+
+  function add() {
+      seconds++;
+      if (seconds >= 60) {
+          seconds = 0;
+          minutes++;
+          if (minutes >= 60) {
+              minutes = 0;
+              hours++;
+          }
+      }
+      var display = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+      updateGamePossession('home', display);
+      $('#timehome').html(display) ;
+      timer();
+  }
+function timer() {
+    clearTimeout(taway);
+    t = setTimeout(add, 1000);
+  }
+function validatePossession(typeTeam, possAway, possHome)
+{
+  var arrpossAway = possAway.split(":");
+  var secondsaway = (+arrpossAway[0]) * 60 * 60 + (+arrpossAway[1]) * 60 + (+arrpossAway[2]);
+  var arrpossHome = possHome.split(":");
+  var secondshome = (+arrpossHome[0]) * 60 * 60 + (+arrpossHome[1]) * 60 + (+arrpossHome[2]);
+
+  if ((secondsaway+secondshome) == 0) {
+    return "00,00%";
+  }
+  if (typeTeam == "home" && possAway == 0) {
+    return "100,00%";
+  }
+  if (typeTeam == "away" && possHome == 0) {
+    return "100,00%";
+  }
+  var poss = (Number(secondshome)/(Number(secondsaway)+Number(secondshome)))*100;
+  poss = Math.round(poss * 100) / 100;
+
+  if (typeTeam == "home") {
+    return poss+"%";
+  }
+  else {
+    return (Math.round((100-poss) * 100)/100)+"%";
+  }
+}
+function addaway() {
+    secondsaway++;
+    if (secondsaway >= 60) {
+        secondsaway = 0;
+        minutesaway++;
+        if (minutesaway >= 60) {
+            minutesaway = 0;
+            hoursaway++;
+        }
+    }
+    var display = (hoursaway ? (hoursaway > 9 ? hoursaway : "0" + hoursaway) : "00") + ":" + (minutesaway ? (minutesaway > 9 ? minutesaway : "0" + minutesaway) : "00") + ":" + (secondsaway > 9 ? secondsaway : "0" + secondsaway);
+    updateGamePossession('away', display);
+    // $('#timeraway').html(display) ;
+    // var poss = (taway/(t+taway))*100;
+    // poss = Math.round(poss * 100) / 100
+    // // poss = Math.round(poss, 2);
+    // $('.possessionaway').html(poss);
+    timeraway();
+}
+function timeraway() {
+    clearTimeout(t);
+    taway = setTimeout(addaway, 1000);
+  }
+
+  /* Start button */
+
+  /* Stop button */
+  // stop.onclick = function() {
+  //     clearTimeout(t);
+  // }
+
+  /* Clear button */
+  // clear.onclick = function() {
+  //     h1.textContent = "00:00:00";
+  //     seconds = 0; minutes = 0; hours = 0;
+  // }
+  function loadClub(){
+    var refClub = defaultDatabase.ref("clubs");
+    refClub.on("value", function(snapshot) {
+      var str = "" ;
+      snapshot.forEach(function(e){
+        str += '<option value="">'+e.val().name+'</option>';
+      });
+      $('.club').html(str);
+    })
   }
      </script>
 
