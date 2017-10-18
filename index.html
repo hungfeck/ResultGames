@@ -48,18 +48,21 @@
           </div>
           <div id="London" class="tabcontent">
             <div class="nameclubs">
-              <div class="wrapper_club" style="float: left; width: 50%;">
-                <span>Đội nhà</span>
-                <select class="homeclub club">
+              <div class="wrapper_club" style="float: left; width: 50%; padding-left: 5%">
+                <span style="float: left;width: 20%;">Đội nhà</span>
+                <select class="homeclub club" style="width: 40%; ">
                 </select>
               </div>
-              <div class="wrapper_club" style="float: left">
-                <span>Đội khách</span>
-                <select class="awayclub club">
+              <div class="wrapper_club" style="float: left; width: 50%;  padding-left: 5%">
+                <span style="float: left;width: 20%;">Đội khách</span>
+                <select class="awayclub club" style="width: 40%; ">
                 </select>
               </div>
             </div>
-            <div class="stadium">
+            <div class="wrapper_stadium" style=" clear: both; float: left; width: 50%; padding-left: 5%;">
+              <span style="float: left;width: 20%;">Sân vận động</span>
+              <select class="stadium" style="width: 40%;">
+              </select>
             </div>
               <div class="wrapper_infor" style="padding-top: 25px;">
               </div><!--.wrapper_infor-->
@@ -334,18 +337,21 @@
     round = roundchange;
     clearTimeout(t);
     clearTimeout(taway);
+    var refStadium = defaultDatabase.ref("games/"+gameId+"/stadium");
+    refStadium.on("value", function(snapshot) {
+      // alert(snapshot.val());
+      // var text = $('.stadium').text(snapshot.val());
+      $(".stadium option").filter(function() {
+        return this.text == snapshot.val();
+    }).attr('selected', true);
+    });
+
     var refRound = defaultDatabase.ref("games/"+gameId+"/"+round);
 
     refRound.on("value", function(snapshot) {
       var arrStr = "";
       var arrPossession = "";
-
       arrStr += '<table style="width: 96%;margin-left: 2%;margin-right: 2%;">';
-      arrStr += '<tr>';
-      arrStr += '<td colspan="3" style=" padding: 5px 0px; text-align: center;">Hà Nội ACB</td>';
-      arrStr += '<td colspan="1" style=" text-align: center; padding: 5px 0px;"></td>';
-      arrStr += '<td colspan="3" style="padding: 5px 0px; text-align: center;">Hải Phòng</td>';
-      arrStr += '</tr>';
       snapshot.forEach(function(e){
         if (e.key == "possession") {
           var valHome = validatePossession('home',e.val().away, e.val().home);
@@ -499,12 +505,19 @@ function timeraway() {
     var refClub = defaultDatabase.ref("clubs");
     refClub.on("value", function(snapshot) {
       var str = "" ;
+      var strStadium = "";
       snapshot.forEach(function(e){
         str += '<option value="">'+e.val().name+'</option>';
+        strStadium += '<option value="">'+e.val().stadium+'</option>';
       });
       $('.club').html(str);
+      $('.stadium').html(strStadium);
     })
   }
+  $('.stadium').change(function(){
+    var valStadium = $('.stadium option:selected').text();
+    var refStadium = defaultDatabase.ref("games/"+gameId+"/stadium").set(valStadium);
+  });
      </script>
 
   </body>
