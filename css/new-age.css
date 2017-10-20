@@ -354,11 +354,28 @@ footer {
 .tablinks{
   font-size: 15px;
   float:  left;
-  padding-right: 3px;
+  padding:0px 5px;
+
 }
 .tab{
-  margin-left: 45%;
+  /*margin-left: 45%;
   overflow: hidden;
-  height: 30px;
-  line-height: 30px;
+  height: 40px;
+  line-height: 40px;*/
+  clear: both;
+  /*margin: 25px 0;*/
+
 }
+.tablinks label {
+  background: #eee;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  margin-left: -1px;
+  position: relative;
+  left: 1px;
+  cursor: pointer;
+  /*color: white;*/
+
+}
+.tablinks:nth-child(1) { margin-left: 44%; }

@@ -7,9 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>VTVCAB</title>
-
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -25,13 +23,14 @@
 
     <!-- Custom styles for this template -->
     <link href="css/new-age.css" rel="stylesheet">
+    <link href="css/jquery.datetimepicker.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-app.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-auth.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-database.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-firestore.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-messaging.js"></script>
-
+    <script src="js/jquery.datetimepicker.full.js"></script>
 
   </head>
 
@@ -42,29 +41,44 @@
               <h3 style="float: right;">&times;</h3>
           </div>
           <div class="tab">
-              <div class="tablinks tablinks_details" onclick="getGameDetails('round1')" id="defaultOpen">Hiệp 1</div>
-              <div class="tablinks tablinks_manageUserSale" onclick="getGameDetails('round2')">Hiệp 2</div>
-              <div class="tablinks tablinks_manageUserGroup" onclick="getGameDetails('all')">Tất cả</div>
+              <div class="tablinks tablinks_details " onclick="getGameDetails('round1')" id="defaultOpen"><label for="tab-2" class="defaultlabel">Hiệp 1</label></div>
+              <div class="tablinks tablinks_manageUserSale" onclick="getGameDetails('round2')"><label for="tab-2">Hiệp 2</label></div>
+              <div class="tablinks tablinks_manageUserGroup" onclick="getGameDetails('all')"><label for="tab-2">Tất cả</label></div>
           </div>
           <div id="London" class="tabcontent">
-            <div class="nameclubs">
-              <div class="wrapper_club" style="float: left; width: 50%; padding-left: 5%">
-                <span style="float: left;width: 20%;">Đội nhà</span>
-                <select class="homeclub club" style="width: 40%; ">
-                </select>
-              </div>
-              <div class="wrapper_club" style="float: left; width: 50%;  padding-left: 5%">
-                <span style="float: left;width: 20%;">Đội khách</span>
-                <select class="awayclub club" style="width: 40%; ">
-                </select>
-              </div>
-            </div>
-            <div class="wrapper_stadium" style=" clear: both; float: left; width: 50%; padding-left: 5%;">
+            <!-- <div class="wrapper_stadium" style=" clear: both; float: left; width: 50%; padding-left: 5%;">
               <span style="float: left;width: 20%;">Sân vận động</span>
               <select class="stadium" style="width: 40%;">
               </select>
-            </div>
-              <div class="wrapper_infor" style="padding-top: 25px;">
+            </div> -->
+            <table style="margin-left: 5%;margin-right: 5%; width: 90%">
+              <!-- <tr>
+                <td style="width: 10%">Tên trận đấu</td>
+                <td style="width: 40%" ><input type="text" class="nameMatch"style="width: 60%; height: 24px;" /></td>
+              </tr>
+              <tr> -->
+                <td style="width: 10%">Đội nhà</td>
+                <td style="width: 40%"><select class="homeclub club" style="width: 60%;"></select></td>
+                <td style="width: 10%">Đội khách</td>
+                <td style="width: 40%"><select class="awayclub club" style="width: 60%;"></select></td>
+              </tr>
+              <tr>
+                <td style="width: 10%">Sân vận động</td>
+                <td style="width: 40%"><select class="stadium" style="width: 60%;"></select></td>
+                <td style="width: 10%">Thời gian</td>
+                <td style="width: 40%"><input type="text" class="timeStart"style="width: 60%; height: 24px;" /></td>
+              </tr>
+              <tr>
+                <td style="width: 10%">Bắt đầu</td>
+                <td colspan="8"; style="padding: 5px 0px" >
+                  <img title="" onclick="starttimermatch()" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete img_starttimermatch" src="img/play.png">
+                  <img title="" onclick="stoptimermatch()" style="height: 40px; width: 40px;cursor:pointer; display: none;" class="img_delete img_stoptimermatch" src="img/pausered.png">
+                  <span class="timeMatch" style="margin-left: 20px;"><time>00:00:00</time></span>
+                </td>
+              </tr>
+            </table>
+
+              <div class="wrapper_infor" style="padding-top: 15px;">
               </div><!--.wrapper_infor-->
           </div><!--.tabcontent-->
       </div><!--.wrapper_form-->
@@ -162,23 +176,16 @@
    var defaultDatabase = defaultApp.database();
    var ref = defaultDatabase.ref("games");
    var h1 = document.getElementById('timehome'),
-     start = document.getElementById('starthome'),
-     seconds = 0, minutes = 0, hours = 0, secondsaway = 0, minutesaway = 0, hoursaway = 0,
-     t,taway;
-  //  var refFoul = defaultDatabase.ref("games/-Kw_yHgkmL0f0LZK0vyN").update({ awayname: "Chelsea" });
-   // var refFoul = defaultDatabase.ref("games/-Kw_yHgkmL0f0LZK0vyN/name").set( "Chelsea" );
-   loadClub();
-  //  var refte = defaultDatabase.ref("clubs");
-  //  var refclub = refte.push().set({
-  //    "name": "Hà Nội",
-  //    "stadium": "Hàng Đẫy",
-  //    "national": "V League"
-  //  });
+    //  start = document.getElementById('starthome'),
+     seconds = 0, minutes = 0, hours = 0, secondsaway = 0, minutesaway = 0, hoursaway = 0,secondsmatch = 0, minutesmatch = 0, hoursmatch = 0,
+     t,taway,tmatch;
 
+loadClub();
    $('.close').click(function(){
       $('.wrapper_add_edit').css("display", "none");
       clearTimeout(t);
       clearTimeout(taway);
+      clearTimeout(tmatch);
    });
    $('.btnAdd').click(function(){
       $('.wrapper_add_edit').css("display", "block");
@@ -189,81 +196,84 @@
       "deleted" : 0,
       "homename" : "",
       "name" : "",
+      "timematch" : "00:00:00",
       "round1" : {
-        "corners" : {
+        "7corners" : {
           "away" : 0,
           "home" : 0
         },
-        "fouls" : {
+        "3fouls" : {
           "away" : 0,
           "home" : 0
         },
-        "goals" : {
+        "0goals" : {
           "away" : 0,
           "home" : 0
         },
-        "offsides" : {
+        "6offsides" : {
           "away" : 0,
           "home" : 0
         },
-        "possession" : {
+        "8possession" : {
           "away" : "00:00:00",
           "home" : "00:00:00"
         },
-        "redcard" : {
+        "5redcard" : {
           "away" : 0,
           "home" : 0
         },
-        "shots" : {
+        "1shots" : {
           "away" : 0,
           "home" : 0
         },
-        "shotsontarget" : {
+        "2shotsontarget" : {
           "away" : 0,
           "home" : 0
         },
-        "yellowcard" : {
+        "4yellowcard" : {
           "away" : 0,
           "home" : 0
-        }
+        },
+        "timematch" : "00:00:00"
       },
       "round2" : {
-        "corners" : {
+        "7corners" : {
           "away" : 0,
           "home" : 0
         },
-        "fouls" : {
+        "3fouls" : {
           "away" : 0,
           "home" : 0
         },
-        "goals" : {
+        "0goals" : {
           "away" : 0,
           "home" : 0
         },
-        "offsides" : {
+        "6offsides" : {
           "away" : 0,
           "home" : 0
         },
-        "possession" : {
+        "8possession" : {
           "away" : "00:00:00",
           "home" : "00:00:00"
         },
-        "redcard" : {
+        "5redcard" : {
           "away" : 0,
           "home" : 0
         },
-        "shots" : {
+        "1shots" : {
           "away" : 0,
           "home" : 0
         },
-        "shotsontarget" : {
+        "2shotsontarget" : {
           "away" : 0,
           "home" : 0
         },
-        "yellowcard" : {
+        "4yellowcard" : {
           "away" : 0,
           "home" : 0
-        }
+        },
+        "timematch" : "00:00:00"
       },
       "stadium" : "",
       "updatedate" : "",
@@ -273,6 +283,8 @@
         var newPost = snapshot.val();
         gameId =  snapshot.key;
         getGameDetails('round1');
+        $('.tablinks label').css("background","#eee");
+        $('.defaultlabel').css("background","cadetblue");
         // console.log("Previous Post ID: " + prevChildKey);
       });
    });
@@ -281,7 +293,7 @@
    ref.on("value", function(snapshot) {
    	var newPost=snapshot.val();
    	var str = "";
-    str += '<table style="width:100%">';
+    str += '<table style="width:100%;" class="tblGames">';
     str += '<tr>';
     str += '<th style="text-align: center;">Stt</th>';
     str += '<th style="text-align: center;">Trận đấu</th>';
@@ -299,7 +311,7 @@
         str += '<td style="width: auto">'+childSnapshot.val().name+'</td>';
         str += '<td style="width: 20%">'+childSnapshot.val().createdate+'</td>';
         str += '<td style="width: 30%">'+childSnapshot.val().stadium+'</td>';
-        str += '<td style="text-align: center; width: 15%"><img title="Sửa" onclick="editGameDetails(\'' + childSnapshot.key + '\')" style="height: 25px; width: 25px;cursor:pointer; margin-right: 10px;" class="img_delete" src="img/settings.png"/><img title="Xóa" onclick="deleteUser(\'' + 2+ '\',\'Bạn muốn xóa số điện thoại này?\')" style="height: 25px; width: 25px; cursor:pointer;" class="img_delete" src="img/delete.png"/></td>';
+        str += '<td style="text-align: center; width: 15%"><img title="Sửa" onclick="editGameDetails(\'' + childSnapshot.key + '\')" style="height: 25px; width: 25px;cursor:pointer; margin-right: 10px;" class="img_delete" src="img/settings.png"/><img title="Xóa" onclick="deleteGames(\'' + childSnapshot.key + '\')" style="height: 25px; width: 25px; cursor:pointer;" class="img_delete" src="img/delete.png"/></td>';
         str += '</tr>';
       }
 
@@ -321,6 +333,12 @@
       if(mm<10) {
         mm = '0'+mm
       }
+      if(h<10) {
+        h = '0'+h
+      }
+      if(mn<10) {
+        mn = '0'+mn
+      }
       return today = dd + '/' + mm + '/' + yyyy + ' ' +h+ ':'+mn;
    }
    function openCity(evt, cityName, round) {
@@ -337,56 +355,111 @@
       evt.currentTarget.className += " active";
 
   }
+  function deleteGames(gameId){
+    var refDel = defaultDatabase.ref("games/"+gameId+"/deleted").set("1");
+  }
   function getGameDetails(roundchange){
+
     round = roundchange;
     clearTimeout(t);
     clearTimeout(taway);
-    var refStadium = defaultDatabase.ref("games/"+gameId+"/stadium");
-    refStadium.on("value", function(snapshot) {
-      // alert(snapshot.val());
-      // var text = $('.stadium').text(snapshot.val());
-      $(".stadium option").filter(function() {
-        return this.text == snapshot.val();
-    }).attr('selected', true);
+    clearTimeout(tmatch);
+    // Đổi màu cho tablinks
+    $('.tablinks label').click(function(){
+      $('.tablinks label').css("background","#eee");
+      $(this).css("background","cadetblue");
     });
 
-    var refRound = defaultDatabase.ref("games/"+gameId+"/"+round);
 
+    var refStadium = defaultDatabase.ref("games/"+gameId+"/stadium");
+    $('.stadium option:selected').removeAttr('selected');
+
+    refStadium.on("value", function(snapshot) {
+      // alert($('.stadium :selected').text()) ;
+      $(".stadium option").filter(function() {
+          return this.text == snapshot.val();
+      }).attr('selected', true);
+    });
+
+    // Thông tin chung trận đấu
+    var refGame = defaultDatabase.ref("games/"+gameId);
+    refGame.on("value", function(snapshot) {
+      snapshot.forEach(function(e){
+        // if (e.key == "name") {
+        //   $('.nameMatch').val(e.val());
+        // }
+      });
+    });
+
+    // Thời gian trận
+    var refTimeMatch = defaultDatabase.ref("games/"+gameId+"/"+round+"/timematch");
+    refTimeMatch.on("value", function(snapshot) {
+      $(".timeMatch").html(snapshot.val());
+      if (snapshot.val() != "00:00:00") {
+        $('.img_starttimermatch').css("display", "none");
+        $('.img_stoptimermatch').css("display", "inline-block");
+      }
+      else {
+        $('.img_starttimermatch').css("display", "inline-block");
+        $('.img_stoptimermatch').css("display", "none");
+      }
+
+      var arrMatch = snapshot.val().split(":");
+      hoursmatch = Number(arrMatch[0]); minutesmatch = Number(arrMatch[1]) ; secondsmatch = Number(arrMatch[2]);
+    });
+
+    // Thông tin trận
+    var refRound = defaultDatabase.ref("games/"+gameId+"/"+round);
     refRound.on("value", function(snapshot) {
       var arrStr = "";
       var arrPossession = "";
-      arrStr += '<table style="width: 96%;margin-left: 2%;margin-right: 2%;">';
+      arrStr += '<table style="width: 96%;margin-left: 2%;margin-right: 2%;  margin-bottom: 30px;" class="tblGameDetail">';
       snapshot.forEach(function(e){
-        if (e.key == "possession") {
+        if (e.key == "timematch") {
+          return;
+          // alert(111);
+          // continue;
+        }
+        if (e.key == "8possession") {
           var valHome = validatePossession('home',e.val().away, e.val().home);
           var valAway = validatePossession('away',e.val().away, e.val().home);
           var arrHome = e.val().home.split(":");
           var arrAway = e.val().away.split(":");
           hours = Number(arrHome[0]); minutes = Number(arrHome[1]) ; seconds = Number(arrHome[2]);
           hoursaway = Number(arrAway[0]); minutesaway = Number(arrAway[1]) ; secondsaway = Number(arrAway[2]);
+          var checkt = (t != null ) ?"none": "inline-block";
+          var checktforpause = (t != null) ? "inline-block" : "none";
+          var checkaway = (taway != null) ?"none": "inline-block";
+          var checkawayforpause = (taway != null) ? "inline-block" : "none";
 
           arrPossession += '<tr>';
           arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">'+valHome+'</span></td>';
           arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timehome"><time>'+e.val().home+'</span></td>';
-          arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="" onclick="timer()" style="height: 25px; width: 25px;cursor:pointer;" id="starthome" class="img_delete" src="img/play.png"/></td>';
+          arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
+          arrPossession +=  '<img title="Bắt đầu" onclick="starthomeAction()" style="height: 25px; width: 25px;cursor:pointer; display:'+ checkt +' " id="starthome" class="img_delete img_starthome" src="img/play.png" />';
+          arrPossession +=  '<img title="Dừng" style="height: 25px; width: 25px;cursor:pointer; display:'+ checktforpause +'" class="img_delete img_pausehome" src="img/pausered.png"/>';
+          arrPossession +=  '</td>';
           arrPossession += '<td style="width: auto; text-align: center; padding: 5px 0px;">Kiểm soát bóng</td>';
-          arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="" onclick="timeraway()" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/play.png"/></td>';
+          arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
+          arrPossession += '<img title="Bắt đầu" onclick="startawayAction()" style="height: 25px; width: 25px;cursor:pointer;  display:'+ checkaway +'" class="img_delete img_startaway" src="img/play.png"/>';
+          arrPossession += '<img title="Dừng" style="height: 25px; width: 25px;cursor:pointer; display:'+ checkawayforpause +'" class="img_delete img_pauseaway" src="img/pausered.png"/>';
+          arrPossession += '</td>';
           arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timeraway" ><time>'+e.val().away+'</time></span></td>';
           arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">'+valAway+'</span></td>';
           arrPossession += '</tr>';
-          arrPossession += '<tr><td colspan="8" style="padding: 5px 0px; text-align: center;"><img title="" onclick="pauseTime()" style="height: 40px; width: 40px;cursor:pointer;" id="starthome" class="img_delete" src="img/pause.png"/></td></tr>';
+          arrPossession += '<tr><td colspan="8" style="padding: 5px 0px; text-align: center;"><img title="" onclick="pauseTime()" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/pause.png"/></td></tr>';
         }
         else {
           var validateKey = "";
-          if(e.key == "corners") validateKey = "Phạt góc";
-          if(e.key == "fouls") validateKey = "Phạm lỗi";
-          if(e.key == "goals") validateKey = "Bàn thắng";
-          if(e.key == "offsides") validateKey = "Việt vị";
-          if(e.key == "possession") validateKey = "Kiểm soát bóng";
-          if(e.key == "redcard") validateKey = "Thẻ đỏ";
-          if(e.key == "shots") validateKey = "Cú sút";
-          if(e.key == "shotsontarget") validateKey = "Cú sút trúng đích";
-          if(e.key == "yellowcard") validateKey = "Thẻ vàng";
+          if(e.key == "7corners") validateKey = "Phạt góc";
+          if(e.key == "3fouls") validateKey = "Phạm lỗi";
+          if(e.key == "0goals") validateKey = "Bàn thắng";
+          if(e.key == "6offsides") validateKey = "Việt vị";
+          if(e.key == "8possession") validateKey = "Kiểm soát bóng";
+          if(e.key == "5redcard") validateKey = "Thẻ đỏ";
+          if(e.key == "1shots") validateKey = "Cú sút";
+          if(e.key == "2shotsontarget") validateKey = "Cú sút trúng đích";
+          if(e.key == "4yellowcard") validateKey = "Thẻ vàng";
           arrStr += '<tr>';
           arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'home\',\''+ e.key +'\',\''+(Number(e.val().home)-1)+'\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
           arrStr += '<td style="width: 15%; text-align: center; padding: 5px 0px;">'+ e.val().home +'</td>';
@@ -407,20 +480,44 @@
   function pauseTime(){
     clearTimeout(t);
     clearTimeout(taway);
+    t = null;
+    taway = null;
+    $('.img_starthome').css("display", "inline-block");
+    $('.img_pausehome').css("display", "none");
+    $('.img_startaway').css("display", "inline-block");
+    $('.img_pauseaway').css("display", "none");
   }
   // Sửa Game
   function editGameDetails(Id){
     gameId = Id;
     $('.wrapper_add_edit').css("display", "block");
+    // Mặc định là đang trỏ vào hiệp 1
     getGameDetails('round1');
+    $('.tablinks label').css("background","#eee");
+    $('.defaultlabel').css("background","cadetblue");
   }
   function updateGameDetails(typeTeam, field, val){
     if(Number(val) >= 0)
-    var refRound = defaultDatabase.ref("games/"+gameId+"/"+round+"/"+field+"/"+typeTeam).set(val);
+    {
+      if (field == "1shots") // Nếu là cú sút trúng đích thì tự động thêm mới vào sút
+      {
+        var refShotsontarget = defaultDatabase.ref("games/"+gameId+"/"+round+"/2shotsontarget/"+typeTeam);
+        var valShotsontarget = 0;
+        refShotsontarget.on("value", function(snapshot) {
+          valShotsontarget = Number(snapshot.val())+1;
+        });
+        var refShotontarget = defaultDatabase.ref("games/"+gameId+"/"+round+"/2shotsontarget/"+typeTeam).set(valShotsontarget);
+      }
+      var refRound = defaultDatabase.ref("games/"+gameId+"/"+round+"/"+field+"/"+typeTeam).set(val);
+      pushDetail(field, typeTeam);
+    }
+
   }
   function updateGamePossession(typeTeam, val){
-
-    var refRound = defaultDatabase.ref("games/"+gameId+"/"+round+"/possession/"+typeTeam).set(val);
+    var refRound = defaultDatabase.ref("games/"+gameId+"/"+round+"/8possession/"+typeTeam).set(val);
+  }
+  function updateTimeMatch(val){
+    var refRound = defaultDatabase.ref("games/"+gameId+"/"+round+"/timematch").set(val);
   }
   // Đếm giờ
 
@@ -481,30 +578,54 @@ function addaway() {
     }
     var display = (hoursaway ? (hoursaway > 9 ? hoursaway : "0" + hoursaway) : "00") + ":" + (minutesaway ? (minutesaway > 9 ? minutesaway : "0" + minutesaway) : "00") + ":" + (secondsaway > 9 ? secondsaway : "0" + secondsaway);
     updateGamePossession('away', display);
-    // $('#timeraway').html(display) ;
-    // var poss = (taway/(t+taway))*100;
-    // poss = Math.round(poss * 100) / 100
-    // // poss = Math.round(poss, 2);
-    // $('.possessionaway').html(poss);
     timeraway();
 }
 function timeraway() {
     clearTimeout(t);
     taway = setTimeout(addaway, 1000);
   }
+function addmatch() {
+    secondsmatch++;
+    if (secondsmatch >= 60) {
+        secondsmatch = 0;
+        minutesmatch++;
+        if (minutesmatch >= 60) {
+            minutesmatch = 0;
+            hoursmatch++;
+        }
+    }
+    var display = (hoursmatch ? (hoursmatch > 9 ? hoursmatch : "0" + hoursmatch) : "00") + ":" + (minutesmatch ? (minutesmatch > 9 ? minutesmatch : "0" + minutesmatch) : "00") + ":" + (secondsmatch > 9 ? secondsmatch : "0" + secondsmatch);
+    updateTimeMatch(display);
+    timermatch();
+}
+function timermatch() {
+    tmatch = setTimeout(addmatch, 1000);
+  }
+function stoptimermatch(){
+  clearTimeout(tmatch);
+}
+function starttimermatch()
+{
+   timermatch();
+   $('.img_starttimermatch').css("display","none");
+   $('.img_stoptimermatch').css("display","inline-block");
 
-  /* Start button */
-
-  /* Stop button */
-  // stop.onclick = function() {
-  //     clearTimeout(t);
+  // if (tmatch == 0) {
+  //   timermatch();
   // }
-
-  /* Clear button */
-  // clear.onclick = function() {
-  //     h1.textContent = "00:00:00";
-  //     seconds = 0; minutes = 0; hours = 0;
+  // else {
+  //   clearTimeout(tmatch);
+  //   tmatch = 0;
   // }
+}
+
+  function pushDetail(field, typeTeam){
+    var ref = defaultDatabase.ref("games/"+gameId+"/"+round+"/"+field);
+    var refNew = ref.push().set({
+      "date" : getToday(),
+      "typeteam" : typeTeam
+    });
+  }
   function loadClub(){
     var refClub = defaultDatabase.ref("clubs");
     refClub.on("value", function(snapshot) {
@@ -518,10 +639,45 @@ function timeraway() {
       $('.stadium').html(strStadium);
     })
   }
+  $('.homeclub').change(function(){
+    var valHome = $('.homeclub option:selected').text();
+    var valAway = $('.awayclub option:selected').text();
+    var refHome = defaultDatabase.ref("games/"+gameId+"/homename").set(valHome);
+    var refnameMatch = defaultDatabase.ref("games/"+gameId+"/name").set(valHome +" vs "+ valAway);
+  });
+  $('.awayclub').change(function(){
+    var valHome = $('.homeclub option:selected').text();
+    var valAway = $('.awayclub option:selected').text();
+    var refHome = defaultDatabase.ref("games/"+gameId+"/awayname").set(valAway);
+    var refnameMatch = defaultDatabase.ref("games/"+gameId+"/name").set(valHome +" vs "+ valAway);
+  });
   $('.stadium').change(function(){
     var valStadium = $('.stadium option:selected').text();
     var refStadium = defaultDatabase.ref("games/"+gameId+"/stadium").set(valStadium);
   });
+  // Tắt bật kiểm soát bóng
+  function starthomeAction(){
+    timer();
+    taway = null;
+  }
+
+  function startawayAction(){
+    timeraway();
+    t = null;
+  }
+  // $('.img_starthome').click(function(){
+  //   alert(1111);
+  //
+  // });
+
+
+  // $('.nameMatch').change(function(){
+  //   var nameMatch = $('.nameMatch').val();
+  //   var refnameMatch = defaultDatabase.ref("games/"+gameId+"/name").set(nameMatch);
+  // });
+  // $.datetimepicker.setLocale('pt-BR');
+  // $('.timeStart').datetimepicker();
+
      </script>
 
   </body>
