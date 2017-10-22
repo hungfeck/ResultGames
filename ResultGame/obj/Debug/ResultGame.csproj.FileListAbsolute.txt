@@ -1,0 +1,6 @@
+E:\ResultGame\ResultGame\bin\ResultGame.dll.config
+E:\ResultGame\ResultGame\bin\ResultGame.dll
+E:\ResultGame\ResultGame\bin\ResultGame.pdb
+E:\ResultGame\ResultGame\bin\Newtonsoft.Json.dll
+E:\ResultGame\ResultGame\obj\Debug\ResultGame.dll
+E:\ResultGame\ResultGame\obj\Debug\ResultGame.pdb

@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace ResultGame.Model
+{
+    public class users
+    {
+        public string username { get; set; }
+        public string password { get; set; }
+        public string role { get; set; }
+    }
+}
