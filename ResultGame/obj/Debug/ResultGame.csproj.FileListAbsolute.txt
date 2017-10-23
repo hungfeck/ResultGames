@@ -4,3 +4,10 @@ E:\ResultGame\ResultGame\bin\ResultGame.pdb
 E:\ResultGame\ResultGame\bin\Newtonsoft.Json.dll
 E:\ResultGame\ResultGame\obj\Debug\ResultGame.dll
 E:\ResultGame\ResultGame\obj\Debug\ResultGame.pdb
+E:\ResultGames\ResultGame\bin\ResultGame.dll.config
+E:\ResultGames\ResultGame\bin\ResultGame.dll
+E:\ResultGames\ResultGame\bin\ResultGame.pdb
+E:\ResultGames\ResultGame\bin\Newtonsoft.Json.dll
+E:\ResultGames\ResultGame\obj\Debug\ResultGame.csprojResolveAssemblyReference.cache
+E:\ResultGames\ResultGame\obj\Debug\ResultGame.dll
+E:\ResultGames\ResultGame\obj\Debug\ResultGame.pdb

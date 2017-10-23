@@ -101,6 +101,7 @@
     <Content Include="Handlers\Login.ashx" />
     <Content Include="Handlers\CheckLogin.ashx" />
     <Content Include="Handlers\Logout.ashx" />
+    <None Include="Properties\PublishProfiles\ResultGame.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

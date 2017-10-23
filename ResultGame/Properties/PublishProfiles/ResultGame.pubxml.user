@@ -1,0 +1,568 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>E:\Publish\ResultGames</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>10/02/2013 12:10:10</publishTime>
+    </File>
+    <File Include="bin/ResultGame.dll">
+      <publishTime>10/23/2017 08:02:34</publishTime>
+    </File>
+    <File Include="css/jquery.datetimepicker.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="css/jquery.datetimepicker.min.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="css/new-age.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="css/new-age.min.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="date/jquery.datetimepicker.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="date/jquery.datetimepicker.full.js">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/apple_watch/edition/gold.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/apple_watch/edition/rose.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/apple_watch/sport/black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/apple_watch/sport/blue.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/apple_watch/sport/green.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/apple_watch/sport/red.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/apple_watch/sport/white.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/apple_watch/watch/metal.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/apple_watch/watch/steel.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/device-mockups.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/device-mockups.min.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/device-mockups2.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/device-mockups2.min.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/galaxy_s3/s3_land_black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/galaxy_s3/s3_land_white.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/galaxy_s3/s3_port_black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/galaxy_s3/s3_port_white.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/galaxy_s5/galaxy_s5_land_black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/galaxy_s5/galaxy_s5_land_gold.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/galaxy_s5/galaxy_s5_land_white.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/galaxy_s5/galaxy_s5_port_black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/galaxy_s5/galaxy_s5_port_gold.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/galaxy_s5/galaxy_s5_port_white.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/galaxy_tab4/galaxy_tab4_land_black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/galaxy_tab4/galaxy_tab4_land_white.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/galaxy_tab4_small/galaxy_tab4_black_small.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/galaxy_tab4_small/galaxy_tab4_white_small.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/imac/imac.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad/ipad_land_black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad/ipad_land_white.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad/ipad_port_black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad/ipad_port_white.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_air/ipad_air_gray_land.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_air/ipad_air_gray_port.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_air/ipad_air_silver_land.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_air/ipad_air_silver_port.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_air_2/ipad_air_2_gold_land.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_air_2/ipad_air_2_gold_port.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_air_2/ipad_air_2_gray_land.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_air_2/ipad_air_2_gray_port.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_air_2/ipad_air_2_silver_land.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_air_2/ipad_air_2_silver_port.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_pro/ipad_pro_land_black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_pro/ipad_pro_land_gold.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_pro/ipad_pro_land_silver.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_pro/ipad_pro_port_black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_pro/ipad_pro_port_gold.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/ipad_pro/ipad_pro_port_silver.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone5/iphone5_land_black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone5/iphone5_land_white.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone5/iphone5_port_black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone5/iphone5_port_white.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_6/iphone_6_land_black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_6/iphone_6_land_gold.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_6/iphone_6_land_white.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_6/iphone_6_port_black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_6/iphone_6_port_gold.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_6/iphone_6_port_white.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_6_plus/iphone_6_plus_black_land.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_6_plus/iphone_6_plus_black_port.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_6_plus/iphone_6_plus_gold_land.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_6_plus/iphone_6_plus_gold_port.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_6_plus/iphone_6_plus_white_land.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_6_plus/iphone_6_plus_white_port.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_se/iphone_se_land_black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_se/iphone_se_land_gold.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_se/iphone_se_land_rose.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_se/iphone_se_land_white.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_se/iphone_se_port_black.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_se/iphone_se_port_gold.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_se/iphone_se_port_rose.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/iphone_se/iphone_se_port_white.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/lumia920/lumia920_land.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/lumia920/lumia920_port.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/lumia_930/lumia_930_dark_land.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/lumia_930/lumia_930_dark_port.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/lumia_930/lumia_930_light_land.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/lumia_930/lumia_930_light_port.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/macbook/macbook.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/macbook_2015/gold.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/macbook_2015/grey.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/macbook_2015/silver.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/nexus7/nexus7_land.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/nexus7/nexus7_port.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/nexus_6/nexus_6_land.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/nexus_6/nexus_6_port.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/samsung_tv/samsung_tv.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="device-mockups/surface/surface.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="Handlers/CheckLogin.ashx">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="Handlers/Login.ashx">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="Handlers/Logout.ashx">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/add1.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/app-store-badge.svg">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/bernabeu.jpg">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/bg-cta.jpg">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/bg-pattern.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/delete.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/delete1.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/demo-screen-1.jpg">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/Dowdy_Ficklen.jpg">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/edit1.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/football-stadium-desktop-background.jpg">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/google-play-badge.svg">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/pause.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/pausered.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/play.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/plus.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/remove.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/san-siro-campione.jpg">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/settings.png">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="img/stadium.jpg">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="index.aspx">
+      <publishTime>10/23/2017 09:06:40</publishTime>
+    </File>
+    <File Include="js/jquery.datetimepicker.full.js">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="js/jquery.datetimepicker.js">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="js/new-age.js">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="js/new-age.min.js">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="login.aspx">
+      <publishTime>10/23/2017 08:17:41</publishTime>
+    </File>
+    <File Include="vendor/bootstrap/css/bootstrap-grid.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/bootstrap/css/bootstrap-grid.min.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/bootstrap/css/bootstrap-reboot.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/bootstrap/css/bootstrap-reboot.min.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/bootstrap/css/bootstrap.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/bootstrap/css/bootstrap.min.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/bootstrap/js/bootstrap.js">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/bootstrap/js/bootstrap.min.js">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/css/font-awesome.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/css/font-awesome.min.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/fonts/fontawesome-webfont.eot">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/fonts/fontawesome-webfont.svg">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/fonts/fontawesome-webfont.ttf">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/fonts/fontawesome-webfont.woff">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/fonts/fontawesome-webfont.woff2">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/fonts/FontAwesome.otf">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/less/animated.less">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/less/bordered-pulled.less">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/less/core.less">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/less/fixed-width.less">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/less/font-awesome.less">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/less/icons.less">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/less/larger.less">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/less/list.less">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/less/mixins.less">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/less/path.less">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/less/rotated-flipped.less">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/less/screen-reader.less">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/less/stacked.less">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/less/variables.less">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/scss/font-awesome.scss">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/scss/_animated.scss">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/scss/_bordered-pulled.scss">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/scss/_core.scss">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/scss/_fixed-width.scss">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/scss/_icons.scss">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/scss/_larger.scss">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/scss/_list.scss">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/scss/_mixins.scss">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/scss/_path.scss">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/scss/_rotated-flipped.scss">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/scss/_screen-reader.scss">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/scss/_stacked.scss">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/font-awesome/scss/_variables.scss">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/jquery-easing/jquery.easing.compatibility.js">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/jquery-easing/jquery.easing.js">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/jquery-easing/jquery.easing.min.js">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/jquery/jquery.js">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/jquery/jquery.min.js">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/popper/popper.js">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/popper/popper.min.js">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/simple-line-icons/css/simple-line-icons.css">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/simple-line-icons/fonts/Simple-Line-Icons.eot">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/simple-line-icons/fonts/Simple-Line-Icons.svg">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/simple-line-icons/fonts/Simple-Line-Icons.ttf">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/simple-line-icons/fonts/Simple-Line-Icons.woff">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/simple-line-icons/fonts/Simple-Line-Icons.woff2">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/simple-line-icons/less/simple-line-icons.less">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="vendor/simple-line-icons/scss/simple-line-icons.scss">
+      <publishTime>10/23/2017 07:57:27</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>10/23/2017 08:02:34</publishTime>
+    </File>
+  </ItemGroup>
+</Project>
