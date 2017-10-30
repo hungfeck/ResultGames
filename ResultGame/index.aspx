@@ -1,13 +1,11 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="ResultGame.index" %>
-
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
     <title>VTVCAB</title>
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
@@ -15,16 +13,16 @@
     <!-- Custom fonts for this template -->
     <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="vendor/simple-line-icons/css/simple-line-icons.css" />
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet" />
 
     <!-- Plugin CSS -->
-    <link rel="stylesheet" href="device-mockups/device-mockups.css">
+    <link rel="stylesheet" href="device-mockups/device-mockups.css" />
 
     <!-- Custom styles for this template -->
     <link href="css/new-age.css" rel="stylesheet"/>
-    <link href="date/jquery.datetimepicker.css" rel="stylesheet">
+    <link href="date/jquery.datetimepicker.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-app.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-auth.js"></script>
@@ -46,14 +44,18 @@
        };
        var gameId = "";
        var round = "round1"; // Mặc định hiển thị kết quả Hiệp 1
+       var roundTimeMatch = "";
        var defaultApp = firebase.initializeApp(config);
        var defaultDatabase = defaultApp.database();
        var ref = defaultDatabase.ref("games");
        var h1 = document.getElementById('timehome'),
         //  start = document.getElementById('starthome'),
-         seconds = 0, minutes = 0, hours = 0, secondsaway = 0, minutesaway = 0, hoursaway = 0, secondsmatch = 0, minutesmatch = 0, hoursmatch = 0,
-         t, taway, tmatch;
-       var finished = "0";
+         secondsR1 = 0, minutesR1 = 0, hoursR1 = 0, secondsawayR1 = 0, minutesawayR1 = 0, hoursawayR1 = 0,
+         secondsR2 = 0, minutesR2 = 0, hoursR2 = 0, secondsawayR2 = 0, minutesawayR2 = 0, hoursawayR2 = 0,
+         secondsmatchR1 = 0, minutesmatchR1 = 0, hoursmatchR1 = 0, secondsmatchR2 = 0, minutesmatchR2 = 0, hoursmatchR2 = 0,
+         tR1, tawayR1, tR2, tawayR2, tmatchR1, tmatchR2;
+       var finishedR1 = "0", finishedR2 = "0";
+       var startedR1 = "0", startedR2 = "0";
        var role = "viewer", user = "";
        checklogin();
        function checklogin() {
@@ -82,16 +84,16 @@
        }
     </script>
     <div class="wrapper_add_edit" id="wrapper_add_edit" style="height: 100%; padding-top: 0%">
-      <div class="wrapper_form" id="wrapper_form" style="margin-top: 70px; ">
+      <div class="wrapper_form" id="wrapper_form" style="margin-top: 20px;">
           <div class="close" style="padding-right: 10px; cursor: pointer;">
               <h3 style="float: right;">&times;</h3>
           </div>
           <div class="tab">
-              <div class="tablinks tablinks_details " onclick="getGameDetails('round1')" id="defaultOpen"><label for="tab-2" class="defaultlabel">Hiệp 1</label></div>
-              <div class="tablinks tablinks_manageUserSale" onclick="getGameDetails('round2')"><label for="tab-2">Hiệp 2</label></div>
-              <div class="tablinks tablinks_manageUserGroup" onclick="getGameDetails('all')"><label for="tab-2">Tất cả</label></div>
+              <div class="tablinks tablinks_details " onclick="openCity(event, 'round1')" id="defaultOpen"><label for="tab-2" class="defaultlabel">Hiệp 1</label></div>
+              <div class="tablinks tablinks_manageUserSale" onclick="openCity(event, 'round2')"><label for="tab-2">Hiệp 2</label></div>
+              <div class="tablinks tablinks_manageUserGroup" onclick="openCity(event, 'round3')"><label for="tab-2">Tất cả</label></div>
           </div>
-          <div id="London" class="tabcontent">
+          <div id="round1" class="tabcontent">
             <table style="margin-left: 5%;margin-right: 5%; width: 90%">
                 <tr>
                     <td style="width: 10%">Đội nhà</td>
@@ -121,22 +123,106 @@
               </tr>
               <tr>
                 <td style="width: 10%">Bắt đầu</td>
-                <td colspan="8"; style="padding: 5px 0px" >
-                  <img title="" onclick="starttimermatch()" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete img_starttimermatch" src="img/play.png">
-                  <img title="" onclick="stoptimermatch()" style="height: 40px; width: 40px;cursor:pointer; display: none;" class="img_delete img_stoptimermatch" src="img/pausered.png">
-                  <span class="timeMatch" style="margin-left: 20px;"><time>00:00:00</time></span>
+                <td style="width: 40%; padding: 5px 0px" >
+                  <img title="Bắt đầu" onclick="starttimermatch('round1')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete img_starttimermatchR1" src="img/play.png" />
+                  <img title="Dừng" onclick="pausetimermatch('round1')" style="height: 40px; width: 40px;cursor:pointer; " class="img_delete img_stoptimermatchR1" src="img/pauseblue.png" />
+                  <span class="timeMatch timeMatchRound1" style="margin-left: 20px;"><time>00:00:00</time></span>
+                </td>
+                <td style="width: 10%">Kết thúc</td>
+                <td style="width: 40%; padding: 5px 0px" >
+                  <img title="Kết thúc" onclick="stoptimermatch('round1')" style="height: 40px; width: 40px;cursor:pointer; display: block;" class="img_delete img_stoptimermatchR1" src="img/pausered.png" />
                 </td>
               </tr>
             </table>
-
-              <div class="wrapper_infor" style="padding-top: 15px;">
-              </div><!--.wrapper_infor-->
+            <div class="detailRound1"></div><!--.detailRound1-->
+          </div><!--.tabcontent-->
+          <div id="round2" class="tabcontent" style="display: none;">
+              <table style="margin-left: 5%;margin-right: 5%; width: 90%">
+                <tr>
+                    <td style="width: 10%">Đội nhà</td>
+                    <td style="width: 40%"><select class="homeclub club" style="width: 60%;"></select></td>
+                    <td style="width: 10%">Đội khách</td>
+                    <td style="width: 40%"><select class="awayclub club" style="width: 60%;"></select></td>
+                </tr>
+              <tr>
+                <td style="width: 10%">Sân vận động</td>
+                <td style="width: 40%"><select class="stadium" style="width: 60%;"></select></td>
+                <td style="width: 10%">Thời gian</td>
+                <td style="width: 40%">
+                  <input type="text" class="datetimepicker"style="width: 60%; height: 24px;" />
+                  <script>
+                      $('.datetimepicker').datetimepicker({
+                          format: 'd/m/Y H:i',
+                          step: 5
+                      }).on("input change", function (e) {
+                          if (role == "viewer")
+                              return;
+                          var dateStart = $(this).val();
+                          var refDate = defaultDatabase.ref("games/" + gameId + "/date").set(dateStart);
+                          // console.log(dateStart);
+                      });
+                  </script>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 10%">Bắt đầu</td>
+                <td style="width: 40%; padding: 5px 0px" >
+                  <img title="Bắt đầu" onclick="starttimermatch('round2')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete img_starttimermatchR2" src="img/play.png" />
+                  <img title="Dừng" onclick="pausetimermatch('round2')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete img_stoptimermatchR2" src="img/pauseblue.png" />
+                  <span class="timeMatch timeMatchRound2" style="margin-left: 20px;"><time>00:00:00</time></span>
+                </td>
+                <td style="width: 10%">Kết thúc</td>
+                <td style="width: 40%; padding: 5px 0px" >
+                  <img title="Kết thúc" onclick="stoptimermatch('round2')" style="height: 40px; width: 40px;cursor:pointer; display: block;" class="img_delete img_stoptimermatchR1" src="img/pausered.png" />
+                </td>
+              </tr>
+            </table>
+              <div class="detailRound2"></div><!--.detailRound2-->
+          </div><!--.tabcontent-->
+          <div id="round3" class="tabcontent" style="display: none;">
+              <table style="margin-left: 5%;margin-right: 5%; width: 90%">
+                <tr>
+                    <td style="width: 10%">Đội nhà</td>
+                    <td style="width: 40%"><select class="homeclub club" style="width: 60%;"></select></td>
+                    <td style="width: 10%">Đội khách</td>
+                    <td style="width: 40%"><select class="awayclub club" style="width: 60%;"></select></td>
+                </tr>
+              <tr>
+                <td style="width: 10%">Sân vận động</td>
+                <td style="width: 40%"><select class="stadium" style="width: 60%;"></select></td>
+                <td style="width: 10%">Thời gian</td>
+                <td style="width: 40%">
+                  <input type="text" class="datetimepicker"style="width: 60%; height: 24px;" />
+                  <script>
+                      $('.datetimepicker').datetimepicker({
+                          format: 'd/m/Y H:i',
+                          step: 5
+                      }).on("input change", function (e) {
+                          if (role == "viewer")
+                              return;
+                          var dateStart = $(this).val();
+                          var refDate = defaultDatabase.ref("games/" + gameId + "/date").set(dateStart);
+                          // console.log(dateStart);
+                      });
+                  </script>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 10%">Thời gian trận</td>
+                <td colspan="8"; style="padding: 5px 0px; height: 50px;" >
+          <%--        <img title="" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete img_starttimermatchAll" src="img/play.png" />
+                  <img title="" style="height: 40px; width: 40px;cursor:pointer; display: none;" class="img_delete img_stoptimermatchAll" src="img/pausered.png" />--%>
+                  <span class="timeMatch timeMatchRoundAll" style=""><time>00:00:00</time></span>
+                </td>
+              </tr>
+            </table>
+              <div class="detailRoundAll"></div><!--.detailRoundAll-->
           </div><!--.tabcontent-->
       </div><!--.wrapper_form-->
   </div><!--.wrapper_add_edit-->
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav" style="background: #0072C6;">
+    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav" style="background: #222222;">
       <div class="container">
         <a class="navbar-brand js-scroll-trigger" href="#page-top">VTVCAB</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -147,12 +233,6 @@
           <ul class="navbar-nav ml-auto">
             <!-- <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#download">Download</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#features">Features</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
             </li> -->
           </ul>
         </div>
@@ -162,8 +242,8 @@
     <header class="masthead">
       <div class="container h-100" style="background: white">
         <!-- <input type="submit" value="Submit"> -->
-        <button type="button" class="btn btn-primary btnAdd" style="margin-top: 60px; cursor: pointer;">Thêm mới</button>
-        <div class="logout" style="margin-top: 60px; float: right;">
+        <button type="button" class="btn btn-primary btnAdd" style="margin-top: 20px; cursor: pointer;">Thêm mới</button>
+        <div class="logout" style="margin-top: 20px; float: right;">
             <span class="hiname" style="color: black;"></span>
             <a href="#" class="btnlogout">Thoát</a>
         </div>
@@ -218,13 +298,41 @@
     <!-- Custom scripts for this template -->
     <script src="js/new-age.min.js"></script>
     <script>
-       
+        $(document).keyup(function (e) {
+            if (e.keyCode == 27) { 
+                $('.wrapper_add_edit').css("display", "none");
+                clearTimeout(tR1);
+                clearTimeout(tR2);
+                clearTimeout(tawayR1);
+                clearTimeout(tawayR2);
+                clearTimeout(tmatchR1);
+                clearTimeout(tmatchR2);
+                tR1 = null;
+                tR2 = null;
+                tawayR1 = null;
+                tawayR2 = null;
+                tmatchR1 = null;
+                tmatchR2 = null;
+            }
+        });
         loadClub();
+        $('.img_delete').click(function () {
+            $(this).css("padding-left", "5px");
+        });
         $('.close').click(function () {
             $('.wrapper_add_edit').css("display", "none");
-            clearTimeout(t);
-            clearTimeout(taway);
-            clearTimeout(tmatch);
+            clearTimeout(tR1);
+            clearTimeout(tR2);
+            clearTimeout(tawayR1);
+            clearTimeout(tawayR2);
+            clearTimeout(tmatchR1);
+            clearTimeout(tmatchR2);
+            tR1 = null;
+            tR2 = null;
+            tawayR1 = null;
+            tawayR2 = null;
+            tmatchR1 = null;
+            tmatchR2 = null;
         });
         $('.btnAdd').click(function () {
             if (role == "viewer")
@@ -232,7 +340,7 @@
             $('.wrapper_add_edit').css("display", "block");
             var refNew = ref.push().set({
                 "awayname": "",
-                "createdate": getToday(),
+                "createdate": firebase.database.ServerValue.TIMESTAMP,
                 "createuser": "",
                 "deleted": 0,
                 "homename": "",
@@ -366,46 +474,81 @@
             ref.limitToLast(1).on("child_added", function (snapshot, prevChildKey) {
                 var newPost = snapshot.val();
                 gameId = snapshot.key;
-                getGameDetails('round1');
+                // Thông tin chung trận đấu
+                var refGame = defaultDatabase.ref("games/" + gameId);
+                refGame.on("value", function (snapshot) {
+                    snapshot.forEach(function (e) {
+                        if (e.key == "date") {
+                            $('.datetimepicker').val(e.val());
+                        }
+                        if (e.key == "homename") {
+                            $(".homeclub option").filter(function () {
+                                return this.text == snapshot.val().homename;
+                            }).attr('selected', true);
+                        }
+                        if (e.key == "awayname") {
+                            $(".awayclub option").filter(function () {
+                                return this.text == snapshot.val().awayname;
+                            }).attr('selected', true);
+                        }
+                    });
+                });
+                getGameDetails();
                 $('.tablinks label').css("background", "#eee");
                 $('.defaultlabel').css("background", "cadetblue");
-                // console.log("Previous Post ID: " + prevChildKey);
+                //$('.tablinks label').css("background", "#eee");
+                //$('.defaultlabel').css("background", "cadetblue");
             });
         });
-
         // Attach an asynchronous callback to read the data at our posts reference
-        ref.on("value", function (snapshot) {
-            var newPost = snapshot.val();
+        ref.orderByChild('createdate').limitToLast(15).on("value", function (snapshot) {
+            //var newPost = snapshot.val();
+            //alert(JSON.stringify(snapshot));
             var str = "";
             str += '<table style="width:100%;" class="tblGames">';
             str += '<tr>';
             str += '<th style="text-align: center;">STT</th>';
             str += '<th style="text-align: center;">Trận đấu</th>';
+            str += '<th style="text-align: center;">Trạng thái</th>';
             str += '<th style="text-align: center;">Thời gian</th>';
             str += '<th style="text-align: center;">Sân vận động</th>';
             str += '<th style="text-align: center;">Hành động</th>';
             str += '</tr>';
-            var count = 0;
+            if (snapshot.val() != null)
+                var count = Object.keys(snapshot.val()).length +1;
+            var arrAll = "";
             snapshot.forEach(function (childSnapshot) {
+                arrEach = "";
                 if (childSnapshot.val().deleted == "0") {
-                    count++;
-                    str += '<tr>';
-                    str += '<td style="width: 4%; text-align: center;">' + count + '</td>';
-                    str += '<td style="width: auto"><span style="cursor: pointer" onclick="editGameDetails(\'' + childSnapshot.key + '\')">' + childSnapshot.val().name + '</span></td>';
-                    str += '<td style="width: 15%; text-align: center;">' + childSnapshot.val().date + '</td>';
-                    str += '<td style="width: 25%;">' + childSnapshot.val().stadium + '</td>';
-                    str += '<td style="text-align: center; width: 15%">';
-                    str += '<img title="Sửa" onclick="editGameDetails(\'' + childSnapshot.key + '\')" style="height: 25px; width: 25px;cursor:pointer; margin-right: 10px;" class="img_delete" src="img/settings.png"/>';
-                    if(role != "viewer")
-                        str +=   '<img title="Xóa" onclick="deleteGames(\'' + childSnapshot.key + '\')" style="height: 25px; width: 25px; cursor:pointer;" class="img_delete" src="img/delete.png"/></td>';
-                    str += '</tr>';
-                }
+                    //alert("R1 " + childSnapshot.val().round1.finished + "All " + childSnapshot.val().all.finished);
+                    var stt = "Chưa diễn ra";
+                    if (childSnapshot.val().all.finished == "1")
+                        stt = "Đã kết thúc";
+                    else
+                    {
+                        if (childSnapshot.val().round1.finished == "1")
+                            stt = "Đang diễn ra";
+                    }
 
+                    count--;
+                    arrEach += '<tr>';
+                    arrEach += '<td style="width: 4%; text-align: center;">' + count + '</td>';
+                    arrEach += '<td style="width: auto"><span style="cursor: pointer" onclick="editGameDetails(\'' + childSnapshot.key + '\')">' + childSnapshot.val().name + '</span></td>';
+                    arrEach += '<td style="width: 15%; text-align: center;">' + stt + '</td>';
+                    arrEach += '<td style="width: 15%; text-align: center;">' + childSnapshot.val().date + '</td>';
+                    arrEach += '<td style="width: 20%; text-align: center;">' + childSnapshot.val().stadium + '</td>';
+                    arrEach += '<td style="text-align: center; width: 15%">';
+                    arrEach += '<img title="Sửa" onclick="editGameDetails(\'' + childSnapshot.key + '\')" style="height: 25px; width: 25px;cursor:pointer; margin-right: 10px;" class="img_delete" src="img/settings.png"/>';
+                    if(role != "viewer")
+                        arrEach += '<img title="Xóa" onclick="deleteGames(\'' + childSnapshot.key + '\')" style="height: 25px; width: 25px; cursor:pointer;" class="img_delete" src="img/delete.png"/></td>';
+                    arrEach += '</tr>';
+                    arrAll = arrEach + arrAll;
+                }
             });
+            str += arrAll;
             str += '</table>';
             $('.content').html(str);
         });
-
         function getToday() {
             var today = new Date();
             var dd = today.getDate();
@@ -444,31 +587,7 @@
         function deleteGames(gameId) {
             var refDel = defaultDatabase.ref("games/" + gameId + "/deleted").set("1");
         }
-        function getGameDetails(roundchange) {
-
-            round = roundchange;
-            clearTimeout(t);
-            clearTimeout(taway);
-            clearTimeout(tmatch);
-            t = null, taway = null;
-            // Đổi màu cho tablinks
-            $('.tablinks label').click(function () {
-                $('.tablinks label').css("background", "#eee");
-                $(this).css("background", "cadetblue");
-            });
-
-
-            var refStadium = defaultDatabase.ref("games/" + gameId + "/stadium");
-            $('.stadium option:selected').removeAttr('selected');
-            $('.homeclub option:selected').removeAttr('selected');
-            $('.awayclub option:selected').removeAttr('selected');
-            refStadium.on("value", function (snapshot) {
-                // alert($('.stadium :selected').text()) ;
-                $(".stadium option").filter(function () {
-                    return this.text == snapshot.val();
-                }).attr('selected', true);
-            });
-
+        function MatchInfo() {
             // Thông tin chung trận đấu
             var refGame = defaultDatabase.ref("games/" + gameId);
             refGame.on("value", function (snapshot) {
@@ -486,36 +605,56 @@
                             return this.text == snapshot.val().awayname;
                         }).attr('selected', true);
                     }
+                    if (e.key == "stadium") {
+                        $(".stadium option").filter(function () {
+                            return this.text == snapshot.val().stadium;
+                        }).attr('selected', true);
+                    }
                 });
             });
-            // Thời gian trận
-            var refTimeMatch = defaultDatabase.ref("games/" + gameId + "/" + round + "/timematch");
-            refTimeMatch.on("value", function (snapshot) {
-                $(".timeMatch").html(snapshot.val());
-                if (snapshot.val() != "00:00:00") {
-                    $('.img_starttimermatch').css("display", "none");
-                    $('.img_stoptimermatch').css("display", "inline-block");
-                }
-                else {
-                    $('.img_starttimermatch').css("display", "inline-block");
-                    $('.img_stoptimermatch').css("display", "none");
-                }
-                // alert("timematch "+snapshot.val());
-                var arrMatch = snapshot.val().split(":");
-                hoursmatch = Number(arrMatch[0]); minutesmatch = Number(arrMatch[1]); secondsmatch = Number(arrMatch[2]);
-            });
-            // Thông tin trận
-            var refRound = defaultDatabase.ref("games/" + gameId + "/" + round);
-            refRound.on("value", function (snapshot) {
+        }        
+        function pauseTime(roundchange) {
+            if (roundchange == "round1")
+            {
+                clearTimeout(tR1);
+                clearTimeout(tawayR1);
+                tR1 = null;
+                tawayR1 = null;
+                    //$('.img_starthomeR1').css("display", "inline-block");
+                    //$('.img_pausehomeR1').css("display", "none");
+                    //$('.img_startawayR1').css("display", "inline-block");
+                    //$('.img_pauseawayR1').css("display", "none");
+            }
+            else {
+                clearTimeout(tR2);
+                clearTimeout(tawayR2);
+                tR2 = null;
+                tawayR2 = null;
+                $('.img_starthomeR2').css("display", "inline-block");
+                $('.img_pausehomeR2').css("display", "none");
+                $('.img_startawayR2').css("display", "inline-block");
+                $('.img_pauseawayR2').css("display", "none");
+            }
+        }
+        function getGameDetails() {
+            MatchInfo();
+            // Thông tin hiệp 1
+            var refRound1 = defaultDatabase.ref("games/" + gameId + "/round1");
+            refRound1.on("value", function (snapshot) {
                 var arrStr = "";
                 var arrPossession = "";
                 arrStr += '<table style="width: 96%;margin-left: 2%;margin-right: 2%;  margin-bottom: 30px;" class="tblGameDetail">';
                 snapshot.forEach(function (e) {
                     if (e.key == "timematch") {
+                        $(".timeMatchRound1").html(snapshot.val().timematch);
+                        if (snapshot.val().timematch != "00:00:00")
+                            startedR1 = "1";
+                        var arrMatch = snapshot.val().timematch.split(":");
+                        hoursmatchR1 = Number(arrMatch[0]); minutesmatchR1 = Number(arrMatch[1]); secondsmatchR1 = Number(arrMatch[2]);
                         return;
                     }
                     if (e.key == "finished") {
-                        finished = e.val();
+                        finishedR1 = e.val();
                         return;
                     }
                     if (e.key == "8possession") {
@@ -523,29 +662,29 @@
                         var valAway = validatePossession('away', e.val().away, e.val().home);
                         var arrHome = e.val().home.split(":");
                         var arrAway = e.val().away.split(":");
-                        hours = Number(arrHome[0]); minutes = Number(arrHome[1]); seconds = Number(arrHome[2]);
-                        hoursaway = Number(arrAway[0]); minutesaway = Number(arrAway[1]); secondsaway = Number(arrAway[2]);
-                        var checkt = (t != null) ? "none" : "inline-block";
-                        var checktforpause = (t != null) ? "inline-block" : "none";
-                        var checkaway = (taway != null) ? "none" : "inline-block";
-                        var checkawayforpause = (taway != null) ? "inline-block" : "none";
+                        hoursR1 = Number(arrHome[0]); minutesR1 = Number(arrHome[1]); secondsR1 = Number(arrHome[2]);
+                        hoursawayR1 = Number(arrAway[0]); minutesawayR1 = Number(arrAway[1]); secondsawayR1 = Number(arrAway[2]);
+                        var checkt = (tR1 != null) ? "none" : "inline-block";
+                        var checktforpause = (tR1 != null) ? "inline-block" : "none";
+                        var checkaway = (tawayR1 != null) ? "none" : "inline-block";
+                        var checkawayforpause = (tawayR1 != null) ? "inline-block" : "none";
 
                         arrPossession += '<tr>';
                         arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">' + valHome + '</span></td>';
-                        arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timehome"><time>' + e.val().home + '</span></td>';
+                        arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timehomeR1"><time>' + e.val().home + '</span></td>';
                         arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
-                        arrPossession += '<img title="Bắt đầu" onclick="starthomeAction()" style="height: 25px; width: 25px;cursor:pointer; display:' + checkt + ' " id="starthome" class="img_delete img_starthome" src="img/play.png" />';
-                        arrPossession += '<img title="Dừng" style="height: 25px; width: 25px;cursor:pointer; display:' + checktforpause + '" class="img_delete img_pausehome" src="img/pausered.png"/>';
+                        arrPossession += '<img title="Bắt đầu" onclick="starthomeAction(\'round1\')" style="height: 40px; width: 40px;cursor:pointer; display:' + checkt + ' " id="starthome" class="img_delete img_starthomeR1" src="img/play.png" />';
+                        arrPossession += '<img title="Dừng" style="height: 40px; width: 40px;cursor:pointer; display:' + checktforpause + '" class="img_delete img_pausehomeR1" src="img/pausered.png"/>';
                         arrPossession += '</td>';
                         arrPossession += '<td style="width: auto; text-align: center; padding: 5px 0px;">Kiểm soát bóng</td>';
                         arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
-                        arrPossession += '<img title="Bắt đầu" onclick="startawayAction()" style="height: 25px; width: 25px;cursor:pointer;  display:' + checkaway + '" class="img_delete img_startaway" src="img/play.png"/>';
-                        arrPossession += '<img title="Dừng" style="height: 25px; width: 25px;cursor:pointer; display:' + checkawayforpause + '" class="img_delete img_pauseaway" src="img/pausered.png"/>';
+                        arrPossession += '<img title="Bắt đầu" onclick="startawayAction(\'round1\')" style="height: 40px; width: 40px;cursor:pointer;  display:' + checkaway + '" class="img_delete img_startawayR1" src="img/play.png"/>';
+                        arrPossession += '<img title="Dừng" style="height: 40px; width: 40px;cursor:pointer; display:' + checkawayforpause + '" class="img_delete img_pauseawayR1" src="img/pausered.png"/>';
                         arrPossession += '</td>';
                         arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timeraway" ><time>' + e.val().away + '</time></span></td>';
                         arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">' + valAway + '</span></td>';
                         arrPossession += '</tr>';
-                        arrPossession += '<tr><td colspan="8" style="padding: 5px 0px; text-align: center;"><img title="" onclick="pauseTime()" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/pausered.png"/></td></tr>';
+                        arrPossession += '<tr><td colspan="8" style="padding: 5px 0px; text-align: center;"><img title="" onclick="pauseTime(\'round1\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/pausered.png"/></td></tr>';
                     }
                     else {
                         var validateKey = "";
@@ -559,58 +698,198 @@
                         if (e.key == "2shotsontarget") validateKey = "Cú sút trúng đích";
                         if (e.key == "4yellowcard") validateKey = "Thẻ vàng";
                         arrStr += '<tr>';
-                        arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                        arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round1\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
                         arrStr += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
-                        arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                        arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round1\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
                         arrStr += '<td style="width: auto; text-align: center; padding: 5px 0px;">' + validateKey + '</td>';
-                        arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                        arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round1\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
                         arrStr += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
-                        arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 25px; width: 25px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                        arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round1\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
                         arrStr += '</tr>';
                     }
 
                 });
                 arrStr = arrStr + arrPossession;
                 arrStr += '  </table>';
-                $('.wrapper_infor').html(arrStr);
+                $('.detailRound1').html(arrStr);
             });
-        }
-        function pauseTime() {
-            clearTimeout(t);
-            clearTimeout(taway);
-            t = null;
-            taway = null;
-            $('.img_starthome').css("display", "inline-block");
-            $('.img_pausehome').css("display", "none");
-            $('.img_startaway').css("display", "inline-block");
-            $('.img_pauseaway').css("display", "none");
+            // Thông tin hiệp 2
+            var refRound2 = defaultDatabase.ref("games/" + gameId + "/round2");
+            refRound2.on("value", function (snapshot) {
+                var arrStr = "";
+                var arrPossession = "";
+                arrStr += '<table style="width: 96%;margin-left: 2%;margin-right: 2%;  margin-bottom: 30px;" class="tblGameDetail">';
+                snapshot.forEach(function (e) {
+                    if (e.key == "timematch") {
+                        $(".timeMatchRound2").html(snapshot.val().timematch);
+                        if (snapshot.val().timematch != "00:00:00")
+                            startedR2 = "1";
+                        var arrMatch = snapshot.val().timematch.split(":");
+                        hoursmatchR2 = Number(arrMatch[0]); minutesmatchR2 = Number(arrMatch[1]); secondsmatchR2 = Number(arrMatch[2]);
+                        return;
+                    }
+                    if (e.key == "finished") {
+                        finishedR2 = e.val();
+                        return;
+                    }
+                    if (e.key == "8possession") {
+                        var valHome = validatePossession('home', e.val().away, e.val().home);
+                        var valAway = validatePossession('away', e.val().away, e.val().home);
+                        var arrHome = e.val().home.split(":");
+                        var arrAway = e.val().away.split(":");
+                        hoursR2 = Number(arrHome[0]); minutesR2 = Number(arrHome[1]); secondsR2 = Number(arrHome[2]);
+                        hoursawayR2 = Number(arrAway[0]); minutesawayR2 = Number(arrAway[1]); secondsawayR2 = Number(arrAway[2]);
+                        var checkt = (tR2 != null) ? "none" : "inline-block";
+                        var checktforpause = (tR2 != null) ? "inline-block" : "none";
+                        var checkaway = (tawayR2 != null) ? "none" : "inline-block";
+                        var checkawayforpause = (tawayR2 != null) ? "inline-block" : "none";
+
+                        arrPossession += '<tr>';
+                        arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">' + valHome + '</span></td>';
+                        arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timehomeR2"><time>' + e.val().home + '</span></td>';
+                        arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
+                        arrPossession += '<img title="Bắt đầu" onclick="starthomeAction(\'round2\')" style="height: 40px; width: 40px;cursor:pointer; display:' + checkt + ' " id="starthome" class="img_delete img_starthomeR2" src="img/play.png" />';
+                        arrPossession += '<img title="Dừng" style="height: 40px; width: 40px;cursor:pointer; display:' + checktforpause + '" class="img_delete img_pausehomeR2" src="img/pausered.png"/>';
+                        arrPossession += '</td>';
+                        arrPossession += '<td style="width: auto; text-align: center; padding: 5px 0px;">Kiểm soát bóng</td>';
+                        arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
+                        arrPossession += '<img title="Bắt đầu" onclick="startawayAction(\'round2\')" style="height: 40px; width: 40px;cursor:pointer;  display:' + checkaway + '" class="img_delete img_startawayR2" src="img/play.png"/>';
+                        arrPossession += '<img title="Dừng" style="height: 40px; width: 40px;cursor:pointer; display:' + checkawayforpause + '" class="img_delete img_pauseawayR2" src="img/pausered.png"/>';
+                        arrPossession += '</td>';
+                        arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timeraway" ><time>' + e.val().away + '</time></span></td>';
+                        arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">' + valAway + '</span></td>';
+                        arrPossession += '</tr>';
+                        arrPossession += '<tr><td colspan="8" style="padding: 5px 0px; text-align: center;"><img title="" onclick="pauseTime(\'round2\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/pausered.png"/></td></tr>';
+                    }
+                    else {
+                        var validateKey = "";
+                        if (e.key == "7corners") validateKey = "Phạt góc";
+                        if (e.key == "3fouls") validateKey = "Phạm lỗi";
+                        if (e.key == "0goals") validateKey = "Bàn thắng";
+                        if (e.key == "6offsides") validateKey = "Việt vị";
+                        if (e.key == "8possession") validateKey = "Kiểm soát bóng";
+                        if (e.key == "5redcard") validateKey = "Thẻ đỏ";
+                        if (e.key == "1shots") validateKey = "Cú sút";
+                        if (e.key == "2shotsontarget") validateKey = "Cú sút trúng đích";
+                        if (e.key == "4yellowcard") validateKey = "Thẻ vàng";
+                        arrStr += '<tr>';
+                        arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                        arrStr += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                        arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                        arrStr += '<td style="width: auto; text-align: center; padding: 5px 0px;">' + validateKey + '</td>';
+                        arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                        arrStr += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                        arrStr += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                        arrStr += '</tr>';
+                    }
+
+                });
+                arrStr = arrStr + arrPossession;
+                arrStr += '  </table>';
+                $('.detailRound2').html(arrStr);
+            });
+            // Thông tin all
+            var refRoundAll = defaultDatabase.ref("games/" + gameId + "/all");
+            refRoundAll.on("value", function (snapshot) {
+                var arrStr = "";
+                var arrPossession = "";
+                arrStr += '<table style="width: 50%;margin-left: 25%;  margin-bottom: 30px;" class="tblGameDetail">';
+                arrStr += '<tr><td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;"></td><td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Đội nhà</td><td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Đội khách</td></tr>';
+                snapshot.forEach(function (e) {
+                    if (e.key == "timematch") {
+                        $(".timeMatchRoundAll").html(snapshot.val().timematch);
+                        return;
+                    }
+                    if (e.key == "finished") {
+                        //finished = e.val();
+                        return;
+                    }
+                    if (e.key == "8possession") {
+                        var valHome = validatePossession('home', e.val().away, e.val().home);
+                        var valAway = validatePossession('away', e.val().away, e.val().home);
+                        var arrHome = e.val().home.split(":");
+                        var arrAway = e.val().away.split(":");
+                        hours = Number(arrHome[0]); minutes = Number(arrHome[1]); seconds = Number(arrHome[2]);
+                        hoursaway = Number(arrAway[0]); minutesaway = Number(arrAway[1]); secondsaway = Number(arrAway[2]);
+                        //var checkt = (t != null) ? "none" : "inline-block";
+                        //var checktforpause = (t != null) ? "inline-block" : "none";
+                        //var checkaway = (taway != null) ? "none" : "inline-block";
+                        //var checkawayforpause = (taway != null) ? "inline-block" : "none";
+
+                        arrStr += '<tr>';
+                        arrStr += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Kiểm soát bóng</td>';
+                        arrStr += '<td style="width: 15%; height: 50px; padding: 5px 0px;"><span style="float: left; padding-left: 20%">' + e.val().home + '</span><span style="float: right; padding-right: 20%">' + valHome + '</span></td>';
+                        arrStr += '<td style="width: 15%; height: 50px; padding: 5px 0px;"><span style="float: left; padding-left: 20%">' + e.val().away + '</span><span style="float: right; padding-right: 20%">' + valAway + '</span></td>';
+                        //arrStr += '<td style="width: 15%; height: 50px; padding: 5px 0px;"><span style="float: left; padding-left: 20%">' + e.val().away + '</span><span style="float: right; padding-right: 20%>' + valAway + '</span></td>';
+                        arrStr += '</tr>';
+
+                        //arrPossession += '<tr>';
+                        //arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">' + valHome + '</span></td>';
+                        //arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timehomeAll"><time>' + e.val().home + '</span></td>';
+                        //arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
+                        //arrPossession += '<img title="Bắt đầu" style="height: 40px; width: 40px;cursor:pointer; display:inline-block" id="starthome" class="img_delete img_starthome" src="img/play.png" />';
+                        //arrPossession += '</td>';
+                        //arrPossession += '<td style="width: auto; text-align: center; padding: 5px 0px;">Kiểm soát bóng</td>';
+                        //arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
+                        //arrPossession += '<img title="Bắt đầu" style="height: 40px; width: 40px;cursor:pointer;  display:inline-block" class="img_delete img_startaway" src="img/play.png"/>';
+                        //arrPossession += '</td>';
+                        //arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timeraway" ><time>' + e.val().away + '</time></span></td>';
+                        //arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">' + valAway + '</span></td>';
+                        //arrPossession += '</tr>';
+                        //arrPossession += '<tr><td colspan="8" style="padding: 5px 0px; text-align: center;"><img title="" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/pausered.png"/></td></tr>';
+                    }
+                    else {
+                        var validateKey = "";
+                        if (e.key == "7corners") validateKey = "Phạt góc";
+                        if (e.key == "3fouls") validateKey = "Phạm lỗi";
+                        if (e.key == "0goals") validateKey = "Bàn thắng";
+                        if (e.key == "6offsides") validateKey = "Việt vị";
+                        if (e.key == "8possession") validateKey = "Kiểm soát bóng";
+                        if (e.key == "5redcard") validateKey = "Thẻ đỏ";
+                        if (e.key == "1shots") validateKey = "Cú sút";
+                        if (e.key == "2shotsontarget") validateKey = "Cú sút trúng đích";
+                        if (e.key == "4yellowcard") validateKey = "Thẻ vàng";
+                        arrStr += '<tr>';
+                        arrStr += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + validateKey + '</td>';
+                        arrStr += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                        arrStr += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                        arrStr += '</tr>';
+                    }
+
+                });
+                arrStr = arrStr + arrPossession;
+                arrStr += '  </table>';
+                $('.detailRoundAll').html(arrStr);
+            });
+            openCity(event, 'round1')
         }
         // Sửa Game
         function editGameDetails(Id) {
             gameId = Id;
             $('.wrapper_add_edit').css("display", "block");
             // Mặc định là đang trỏ vào hiệp 1
-            getGameDetails('round1');
+            getGameDetails();
+            //getGameDetails('round1');
             $('.tablinks label').css("background", "#eee");
             $('.defaultlabel').css("background", "cadetblue");
+            
         }
-        function updateGameDetails(typeTeam, field, val) {
-            if (round == "all" || finished == "1" || role == "viewer") {
+        function updateGameDetails(roundchange, typeTeam, field, val) {
+            if (role == "viewer" || (roundchange == "round1" && finishedR1 == "1") || (roundchange == "round2" && finishedR2 == "1")
+                || (roundchange == "round2" && finishedR1 == "0") || (roundchange == "round1" && startedR1 == "0") || (roundchange == "round2" && startedR2 == "0"))
+            {
                 return;
             }
             if (Number(val) >= 0) {
                 if (field == "2shotsontarget") // Nếu là cú sút trúng đích thì tự động thêm mới vào sút
                 {
-                    // Cập nhật cho tất cả
-
-
                     // Cập nhật cho trừng trường
-                    var refOldShot = defaultDatabase.ref("games/" + gameId + "/" + round + "/1shots/" + typeTeam);
+                    var refOldShot = defaultDatabase.ref("games/" + gameId + "/" + roundchange + "/1shots/" + typeTeam);
                     var Oldshot = 0;
                     refOldShot.on("value", function (snapshot) {
                         Oldshot = Number(snapshot.val());
                     });
-                    var refShotsontarget = defaultDatabase.ref("games/" + gameId + "/" + round + "/2shotsontarget/" + typeTeam);
+                    var refShotsontarget = defaultDatabase.ref("games/" + gameId + "/" + roundchange + "/2shotsontarget/" + typeTeam);
                     var newShotsontarget = 0;
                     refShotsontarget.on("value", function (snapshot) {
                         if (Number(val) > Number(snapshot.val())) {
@@ -620,7 +899,7 @@
                             newShotsontarget = Oldshot - 1;
                         }
                     });
-                    var refUdShots = defaultDatabase.ref("games/" + gameId + "/" + round + "/1shots/" + typeTeam).set(newShotsontarget);
+                    var refUdShots = defaultDatabase.ref("games/" + gameId + "/" + roundchange + "/1shots/" + typeTeam).set(newShotsontarget);
 
                     // Cập nhật gia trị cả trận đấu
                     var valAll = 0;
@@ -636,7 +915,7 @@
                 }
 
                 // Cập nhật gia trị cả trận đấu
-                var refRound = defaultDatabase.ref("games/" + gameId + "/" + round + "/" + field + "/" + typeTeam).set(val);
+                var refRound = defaultDatabase.ref("games/" + gameId + "/" + roundchange + "/" + field + "/" + typeTeam).set(val);
                 var valAll = 0;
                 var refRound1 = defaultDatabase.ref("games/" + gameId + "/round1/" + field + "/" + typeTeam);
                 refRound1.on("value", function (snap) {
@@ -648,16 +927,16 @@
                 });
                 var refAll = defaultDatabase.ref("games/" + gameId + "/all/" + field + "/" + typeTeam).set(valAll);
 
-                pushDetail(field, typeTeam);
+                //pushDetail(field, typeTeam);
             }
 
         }
-        function updateGamePossession(typeTeam, val) {
-            if (finished == "1" || round == "all" || role == "viewer") {
+        function updateGamePossession(roundchange, typeTeam, val) {
+            if (role == "viewer" || (roundchange == "round1" && finishedR1 == "1") || (roundchange == "round2" && finishedR2 == "1") || (roundchange == "round2" && finishedR1 == "0")) {
                 return;
             }
 
-            var refRound = defaultDatabase.ref("games/" + gameId + "/" + round + "/8possession/" + typeTeam).set(val);
+            var refRound = defaultDatabase.ref("games/" + gameId + "/" + roundchange + "/8possession/" + typeTeam).set(val);
             // Cập nhật thời gian cho cả 2 hiệp
             var secondsAll = 0, minutesAll = 0, hoursAll = 0;
             var secondRound1 = 0, secondRound2 = 0;
@@ -679,9 +958,9 @@
             var display = (hoursAll ? (hoursAll > 9 ? hoursAll : "0" + hoursAll) : "00") + ":" + (minutesAll ? (minutesAll > 9 ? minutesAll : "0" + minutesAll) : "00") + ":" + (secondsAll > 9 ? secondsAll : "0" + secondsAll);
             var refRound = defaultDatabase.ref("games/" + gameId + "/all/8possession/" + typeTeam).set(display);
         }
-        function updateTimeMatch(val) {
-            var refRound = defaultDatabase.ref("games/" + gameId + "/" + round + "/timematch").set(val);
-
+        function updateTimeMatch(roundTime, val) {
+            var refRound = defaultDatabase.ref("games/" + gameId + "/" + roundTime + "/timematch").set(val);
+            //var refRound = defaultDatabase.ref("games/" + gameId + "/round1/timematch").set(val);
             // Cập nhật thời gian cho cả 2 hiệp
             var secondsAll = 0, minutesAll = 0, hoursAll = 0;
             var secondRound1 = 0, secondRound2 = 0;
@@ -689,6 +968,8 @@
             refRound1.on("value", function (snapshot) {
                 var arrRound1 = snapshot.val().split(":");
                 secondRound1 = (+arrRound1[0]) * 60 * 60 + (+arrRound1[1]) * 60 + (+arrRound1[2]);
+                if (Number(secondRound1) > 2700)
+                    secondRound1 = 2700;
             });
             var refRound2 = defaultDatabase.ref("games/" + gameId + "/round2/timematch");
             refRound2.on("value", function (snapshot) {
@@ -704,26 +985,6 @@
             var refRound = defaultDatabase.ref("games/" + gameId + "/all/timematch").set(display);
         }
         // Đếm giờ
-
-        function add() {
-            seconds++;
-            if (seconds >= 60) {
-                seconds = 0;
-                minutes++;
-                if (minutes >= 60) {
-                    minutes = 0;
-                    hours++;
-                }
-            }
-            var display = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
-            updateGamePossession('home', display);
-            $('#timehome').html(display);
-            timer();
-        }
-        function timer() {
-            clearTimeout(taway);
-            t = setTimeout(add, 1000);
-        }
         function validatePossession(typeTeam, possAway, possHome) {
             var arrpossAway = possAway.split(":");
             var secondsaway = (+arrpossAway[0]) * 60 * 60 + (+arrpossAway[1]) * 60 + (+arrpossAway[2]);
@@ -749,57 +1010,92 @@
                 return (Math.round((100 - poss) * 100) / 100) + "%";
             }
         }
-        function addaway() {
-            secondsaway++;
-            if (secondsaway >= 60) {
-                secondsaway = 0;
-                minutesaway++;
-                if (minutesaway >= 60) {
-                    minutesaway = 0;
-                    hoursaway++;
+        /*****Thời gian trận đấu***/
+        function addmatchR1() {
+            secondsmatchR1++;
+            if (secondsmatchR1 >= 60) {
+                secondsmatchR1 = 0;
+                minutesmatchR1++;
+                if (minutesmatchR1 >= 60) {
+                    minutesmatchR1 = 0;
+                    hoursmatchR1++;
                 }
             }
-            var display = (hoursaway ? (hoursaway > 9 ? hoursaway : "0" + hoursaway) : "00") + ":" + (minutesaway ? (minutesaway > 9 ? minutesaway : "0" + minutesaway) : "00") + ":" + (secondsaway > 9 ? secondsaway : "0" + secondsaway);
-            updateGamePossession('away', display);
-            timeraway();
+            var display = (hoursmatchR1 ? (hoursmatchR1 > 9 ? hoursmatchR1 : "0" + hoursmatchR1) : "00") + ":" + (minutesmatchR1 ? (minutesmatchR1 > 9 ? minutesmatchR1 : "0" + minutesmatchR1) : "00") + ":" + (secondsmatchR1 > 9 ? secondsmatchR1 : "0" + secondsmatchR1);
+            updateTimeMatch("round1",display);
+            timermatchR1();
         }
-        function timeraway() {
-            clearTimeout(t);
-            taway = setTimeout(addaway, 1000);
+        function timermatchR1() {
+            tmatchR1 = setTimeout(addmatchR1, 1000);
         }
-        function addmatch() {
-            secondsmatch++;
-            if (secondsmatch >= 60) {
-                secondsmatch = 0;
-                minutesmatch++;
-                if (minutesmatch >= 60) {
-                    minutesmatch = 0;
-                    hoursmatch++;
+        function addmatchR2() {
+            secondsmatchR2++;
+            if (secondsmatchR2 >= 60) {
+                secondsmatchR2 = 0;
+                minutesmatchR2++;
+                if (minutesmatchR2 >= 60) {
+                    minutesmatchR2 = 0;
+                    hoursmatchR2++;
                 }
             }
-            var display = (hoursmatch ? (hoursmatch > 9 ? hoursmatch : "0" + hoursmatch) : "00") + ":" + (minutesmatch ? (minutesmatch > 9 ? minutesmatch : "0" + minutesmatch) : "00") + ":" + (secondsmatch > 9 ? secondsmatch : "0" + secondsmatch);
-            updateTimeMatch(display);
-            timermatch();
+            var display = (hoursmatchR2 ? (hoursmatchR2 > 9 ? hoursmatchR2 : "0" + hoursmatchR2) : "00") + ":" + (minutesmatchR2 ? (minutesmatchR2 > 9 ? minutesmatchR2 : "0" + minutesmatchR2) : "00") + ":" + (secondsmatchR2 > 9 ? secondsmatchR2 : "0" + secondsmatchR2);
+            updateTimeMatch("round2", display);
+            timermatchR2();
         }
-        function timermatch() {
-            tmatch = setTimeout(addmatch, 1000);
+        function timermatchR2() {
+            tmatchR2 = setTimeout(addmatchR2, 1000);
         }
-        function stoptimermatch() {
-            if (round == "all")
+        function starttimermatch(roundTime) {
+            if (role == "viewer" || (roundTime == "round1" && finishedR1 == "1") || (roundTime == "round2" && finishedR2 == "1") || (roundTime == "round2" && finishedR1 == "0"))
                 return;
-            tmatch = null;
-            var refFinished = defaultDatabase.ref("games/" + gameId + "/" + round + "/finished").set("1");
-            clearTimeout(tmatch);
+            if (roundTime == "round1")
+            {
+                clearTimeout(tmatchR1);
+                tmatchR1 = null;
+                timermatchR1();
+            }
+            else
+            {
+                clearTimeout(tmatchR2);
+                tmatchR2 = null;
+                timermatchR2();
+            }
+            //$('.img_starttimermatch').css("display", "none");
+            //$('.img_stoptimermatch').css("display", "inline-block");
         }
-        function starttimermatch() {
-            if (round == "all" || role == "viewer")
-                return;
-            tmatch = null;
-            timermatch();
-            $('.img_starttimermatch').css("display", "none");
-            $('.img_stoptimermatch').css("display", "inline-block");
+        function stoptimermatch(roundchange) {
+            if (roundchange == "round1") {
+                if (startedR1 == "0") return;
+                clearTimeout(tmatchR1);
+                tmatchR1 = null;
+            }
+            else {
+                if (startedR2 == "0") return;
+                clearTimeout(tmatchR2);
+                tmatchR2 = null;
+                var refFinished = defaultDatabase.ref("games/" + gameId + "/all/finished").set("1");
+            }
+            var refFinished = defaultDatabase.ref("games/" + gameId + "/" + roundchange + "/finished").set("1");
+            $('.img_starthomeR2').css("display", "inline-block");
+            $('.img_pausehomeR2').css("display", "none");
+            $('.img_startawayR2').css("display", "inline-block");
+            $('.img_pauseawayR2').css("display", "none");
         }
-
+        function pausetimermatch(roundchange) {
+            if (roundchange == "round1")
+            {
+                clearTimeout(tmatchR1);
+                tmatchR1 = null;
+            }
+            else
+            {
+                clearTimeout(tmatchR2);
+                tmatchR2 = null;
+                //var refFinished = defaultDatabase.ref("games/" + gameId + "/all/finished").set("1");
+            }
+            //var refFinished = defaultDatabase.ref("games/" + gameId + "/" + roundchange + "/finished").set("1");
+        }
+        /*****End Thời gian trận đấu***/
         function pushDetail(field, typeTeam) {
             var ref = defaultDatabase.ref("games/" + gameId + "/" + round + "/" + field);
             var refNew = ref.push().set({
@@ -823,44 +1119,145 @@
         $('.homeclub').change(function () {
             if (role == "viewer")
                 return;
-            var valHome = $('.homeclub option:selected').text();
-            var valAway = $('.awayclub option:selected').text();
+            var valHome = $('option:selected',this).text();
+            var valAway = "";
+            refOldAway = defaultDatabase.ref("games/" + gameId + "/awayname");
+            refOldAway.on("value", function (snapshot) {
+                valAway = snapshot.val();
+            })
             var refHome = defaultDatabase.ref("games/" + gameId + "/homename").set(valHome);
             var refnameMatch = defaultDatabase.ref("games/" + gameId + "/name").set(valHome + "<span style='color: blue'> vs </span>" + valAway);
         });
         $('.awayclub').change(function () {
             if (role == "viewer")
                 return;
-            var valHome = $('.homeclub option:selected').text();
-            var valAway = $('.awayclub option:selected').text();
-            var refHome = defaultDatabase.ref("games/" + gameId + "/awayname").set(valAway);
+            //var valHome = $('.homeclub option:selected').text();
+            var valHome = "";
+            refOldHome = defaultDatabase.ref("games/" + gameId + "/homename");
+            refOldHome.on("value", function (snapshot) {
+                valHome = snapshot.val();
+            })
+            var valAway = $('option:selected',this).text();
+            var refAway = defaultDatabase.ref("games/" + gameId + "/awayname").set(valAway);
             var refnameMatch = defaultDatabase.ref("games/" + gameId + "/name").set(valHome + "<span style='color: blue'> vs </span>" + valAway);
         });
         $('.stadium').change(function () {
             if (role == "viewer")
                 return;
-            var valStadium = $('.stadium option:selected').text();
+            var valStadium = $('option:selected',this).text();
             var refStadium = defaultDatabase.ref("games/" + gameId + "/stadium").set(valStadium);
         });
 
-        // Tắt bật kiểm soát bóng
-        function starthomeAction() {
-            if (finished == "1" || round == "all") {
+        /***Tắt bật kiểm soát bóng***/
+        function addR1() {
+            secondsR1++;
+            if (secondsR1 >= 60) {
+                secondsR1 = 0;
+                minutesR1++;
+                if (minutesR1 >= 60) {
+                    minutesR1 = 0;
+                    hoursR1++;
+                }
+            }
+            var display = (hoursR1 ? (hoursR1 > 9 ? hoursR1 : "0" + hoursR1) : "00") + ":" + (minutesR1 ? (minutesR1 > 9 ? minutesR1 : "0" + minutesR1) : "00") + ":" + (secondsR1 > 9 ? secondsR1 : "0" + secondsR1);
+            updateGamePossession('round1', 'home', display);
+            $('#timehomeR1').html(display);
+            timerR1();
+        }
+        function timerR1() {
+            clearTimeout(tawayR1);
+            tR1 = setTimeout(addR1, 1000);
+        }
+        function addR2() {
+            secondsR2++;
+            if (secondsR2 >= 60) {
+                secondsR2 = 0;
+                minutesR2++;
+                if (minutesR2 >= 60) {
+                    minutesR2 = 0;
+                    hoursR2++;
+                }
+            }
+            var display = (hoursR2 ? (hoursR2 > 9 ? hoursR2 : "0" + hoursR2) : "00") + ":" + (minutesR2 ? (minutesR2 > 9 ? minutesR2 : "0" + minutesR2) : "00") + ":" + (secondsR2 > 9 ? secondsR2 : "0" + secondsR2);
+            updateGamePossession('round2', 'home', display);
+            $('#timehomeR2').html(display);
+            timerR2();
+        }
+        function timerR2() {
+            clearTimeout(tawayR2);
+            tR2 = setTimeout(addR2, 1000);
+        }
+        function addawayR1() {
+            secondsawayR1++;
+            if (secondsawayR1 >= 60) {
+                secondsawayR1 = 0;
+                minutesawayR1++;
+                if (minutesawayR1 >= 60) {
+                    minutesawayR1 = 0;
+                    hoursawayR1++;
+                }
+            }
+            var display = (hoursawayR1 ? (hoursawayR1 > 9 ? hoursawayR1 : "0" + hoursawayR1) : "00") + ":" + (minutesawayR1 ? (minutesawayR1 > 9 ? minutesawayR1 : "0" + minutesawayR1) : "00") + ":" + (secondsawayR1 > 9 ? secondsawayR1 : "0" + secondsawayR1);
+            updateGamePossession('round1', 'away', display);
+            timerawayR1();
+        }
+        function timerawayR1() {
+            clearTimeout(tR1);
+            tawayR1 = setTimeout(addawayR1, 1000);
+        }
+        function addawayR2() {
+            secondsawayR2++;
+            if (secondsawayR2 >= 60) {
+                secondsawayR2 = 0;
+                minutesawayR2++;
+                if (minutesawayR2 >= 60) {
+                    minutesawayR2 = 0;
+                    hoursawayR2++;
+                }
+            }
+            var display = (hoursawayR2 ? (hoursawayR2 > 9 ? hoursawayR2 : "0" + hoursawayR2) : "00") + ":" + (minutesawayR2 ? (minutesawayR2 > 9 ? minutesawayR2 : "0" + minutesawayR2) : "00") + ":" + (secondsawayR2 > 9 ? secondsawayR2 : "0" + secondsawayR2);
+            updateGamePossession('round2', 'away', display);
+            timerawayR2();
+        }
+        function timerawayR2() {
+            clearTimeout(tR2);
+            tawayR2 = setTimeout(addawayR2, 1000);
+        }
+        function starthomeAction(roundchange) {
+            if (role == "viewer" || (roundchange == "round1" && finishedR1 == "1") || (roundchange == "round2" && finishedR2 == "1") || (roundchange == "round2" && finishedR1 == "0")
+                || (roundchange == "round1" && startedR1 == "0") || (roundchange == "round2" && startedR2 == "0")) {
                 return;
             }
-
-            timer();
-            taway = null;
+            if (roundchange == "round1")
+            {
+                clearTimeout(tR1);
+                timerR1();
+                tawayR1 = null;
+            }
+            else {
+                clearTimeout(tR2);
+                timerR2();
+                tawayR2 = null;
+            }
         }
-
-        function startawayAction() {
-            if (finished == "1" || round == "all") {
+        function startawayAction(roundchange) {
+            if (role == "viewer" || (roundchange == "round1" && finishedR1 == "1") || (roundchange == "round2" && finishedR2 == "1") || (roundchange == "round2" && finishedR1 == "0")
+                || (roundchange == "round1" && startedR1 == "0") || (roundchange == "round2" && startedR2 == "0")) {
                 return;
             }
-
-            timeraway();
-            t = null;
+            if (roundchange == "round1") {
+                clearTimeout(tawayR1);
+                timerawayR1();
+                tR1 = null;
+            }
+            else {
+                clearTimeout(tawayR2);
+                timerawayR2();
+                tR2 = null;
+            }
+            
         }
+        /***End tắt bật kiểm soát bóng***/
         $('.hiname').html("Xin chào " + user + ", ");
         $('.btnlogout').click(function () {
             var params = {};
@@ -897,6 +1294,13 @@
         // });
         // $.datetimepicker.setLocale('pt-BR');
         // $('.timeStart').datetimepicker();
+
+        /***Chinh sua tab***/
+        $('.tablinks label').click(function () {
+            $('.tablinks label').css("background", "#eee");
+            $(this).css("background", "cadetblue");
+        });
+        /***End Chinh sua tab***/
 
      </script>
     </form>
