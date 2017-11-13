@@ -122,11 +122,11 @@
                 </td>
               </tr>
               <tr>
-                <td style="width: 10%">Bắt đầu</td>
-                <td style="width: 40%; padding: 5px 0px" >
+                <td style="width: 10%">Thời gian hiệp</td>
+                <td style="width: 40%; padding: 5px 0px; height: 50px;" >
                   <img title="Bắt đầu" onclick="starttimermatch('round1')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete img_starttimermatchR1" src="img/play.png" />
                   <img title="Dừng" onclick="pausetimermatch('round1')" style="height: 40px; width: 40px;cursor:pointer; " class="img_delete img_stoptimermatchR1" src="img/pauseblue.png" />
-                  <span class="timeMatch timeMatchRound1" style="margin-left: 20px; margin-right: 20px;"><time>00:00:00</time></span>
+                  <span class="timeMatch timeMatchRound1" style="margin-left: 10px; margin-right: 10px;"><time>00:00:00</time></span>
                     <img title="Kết thúc" onclick="stoptimermatch('round1')" style="height: 40px; width: 40px;cursor:pointer; " class="img_delete img_stoptimermatchR1" src="img/pausered.png" />
                 </td>
                 <td style="width: 10%">Vòng đấu</td>
@@ -171,11 +171,11 @@
                 </td>
               </tr>
               <tr>
-                <td style="width: 10%">Bắt đầu</td>
-                <td style="width: 40%; padding: 5px 0px" >
+                <td style="width: 10%">Thời gian hiệp</td>
+                <td style="width: 40%; padding: 5px 0px;  height: 50px;"  >
                   <img title="Bắt đầu" onclick="starttimermatch('round2')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete img_starttimermatchR2" src="img/play.png" />
                   <img title="Dừng" onclick="pausetimermatch('round2')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete img_stoptimermatchR2" src="img/pauseblue.png" />
-                  <span class="timeMatch timeMatchRound2" style="margin-left: 20px; margin-right: 20px;"><time>00:00:00</time></span>
+                  <span class="timeMatch timeMatchRound2" style="margin-left: 10px; margin-right: 10px;"><time>00:00:00</time></span>
                     <img title="Kết thúc" onclick="stoptimermatch('round2')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete img_stoptimermatchR1" src="img/pausered.png" />
                 </td>
                 <td style="width: 10%">Vòng đấu</td>
@@ -220,8 +220,8 @@
               </tr>
               <tr>
                 <td style="width: 10%">Thời gian trận</td>
-                <td style="padding: 5px 0px; height: 50px; width: 40%" >
-                  <span class="timeMatch timeMatchRoundAll" style=""><time>00:00:00</time></span>
+                <td style="padding: 5px 0px; height: 50px; width: 40%; " >
+                  <span class="timeMatch timeMatchRoundAll" style="margin-left: 10px; "><time>00:00:00</time></span>
                 </td>
                 <td style="width: 10%">Vòng đấu</td>
                 <td style="width: 40%; padding: 5px 0px" >
@@ -331,9 +331,6 @@
                 tmatchR2 = null;
             }
         });
-        if (role != "admin") {
-            $('.wrapper_btnAdd').html("");
-        }
         loadClub();
         loadRound();
         loadeditor();
@@ -341,15 +338,19 @@
         //    $(this).css("padding-left", "5px");
         //});
         $(document).ready(function () {
+            
             if (role != "admin")
             {
+                $('.wrapper_btnAdd').html("");
                 $('.editor').prop('disabled', 'disabled');
                 $('.club').prop('disabled', 'disabled');
                 $('.matchRound').prop('disabled', 'disabled');
-                return;
+                if (role == "visitor") {
+                    $('.stadium').prop('disabled', 'disabled');
+                    $('.datetimepicker').prop('disabled', 'disabled');
+                    $('.img_delete').css('display', 'none');
+                }
             }
-                
-
         });
         $('.close').click(function () {
             $('.wrapper_add_edit').css("display", "none");
@@ -588,8 +589,11 @@
                         //arrEach += '<td style="width: 20%; text-align: center;">' + childSnapshot.val().stadium + '</td>';
                         arrEach += '<td style="text-align: center; width: 15%">';
                         arrEach += '<img title="Sửa" onclick="editGameDetails(\'' + childSnapshot.key + '\')" style="height: 25px; width: 25px;cursor:pointer; margin-right: 10px;" class="img_delete" src="img/settings.png"/>';
-                        if (role != "visitor")
+                        if (role == "admin")
+                        {
                             arrEach += '<img title="Xóa" onclick="deleteGames(\'' + childSnapshot.key + '\')" style="height: 25px; width: 25px; cursor:pointer;" class="img_delete" src="img/delete.png"/></td>';
+                        }
+                            
                         arrEach += '</tr>';
                         arrAll = arrEach + arrAll;
                     }
@@ -727,50 +731,52 @@
                 var shots = "";
                 var shotsontarget = "";
                 var yellowcard = "";
-                arrStr += '<table style="width: 96%;margin-left: 2%;margin-right: 2%;  margin-bottom: 30px;" class="tblGameDetail">';
-                snapshot.forEach(function (e) {
-                    if (e.key == "timematch") {
-                        $(".timeMatchRound1").html(snapshot.val().timematch);
-                        if (snapshot.val().timematch != "00:00:00")
-                            startedR1 = "1";
-                        var arrMatch = snapshot.val().timematch.split(":");
-                        hoursmatchR1 = Number(arrMatch[0]); minutesmatchR1 = Number(arrMatch[1]); secondsmatchR1 = Number(arrMatch[2]);
-                        return;
-                    }
-                    if (e.key == "finished") {
-                        finishedR1 = e.val();
-                        return;
-                    }
-                    if (e.key == "possession") {
-                        var valHome = validatePossession('home', e.val().away, e.val().home);
-                        var valAway = validatePossession('away', e.val().away, e.val().home);
-                        var arrHome = e.val().home.split(":");
-                        var arrAway = e.val().away.split(":");
-                        hoursR1 = Number(arrHome[0]); minutesR1 = Number(arrHome[1]); secondsR1 = Number(arrHome[2]);
-                        hoursawayR1 = Number(arrAway[0]); minutesawayR1 = Number(arrAway[1]); secondsawayR1 = Number(arrAway[2]);
-                        var checkt = (tR1 != null) ? "none" : "inline-block";
-                        var checktforpause = (tR1 != null) ? "inline-block" : "none";
-                        var checkaway = (tawayR1 != null) ? "none" : "inline-block";
-                        var checkawayforpause = (tawayR1 != null) ? "inline-block" : "none";
+                if (role != "visitor")
+                {
+                    arrStr += '<table style="width: 96%;margin-left: 2%;margin-right: 2%;  margin-bottom: 30px;" class="tblGameDetail">';
+                    snapshot.forEach(function (e) {
+                        if (e.key == "timematch") {
+                            $(".timeMatchRound1").html(snapshot.val().timematch);
+                            if (snapshot.val().timematch != "00:00:00")
+                                startedR1 = "1";
+                            var arrMatch = snapshot.val().timematch.split(":");
+                            hoursmatchR1 = Number(arrMatch[0]); minutesmatchR1 = Number(arrMatch[1]); secondsmatchR1 = Number(arrMatch[2]);
+                            return;
+                        }
+                        if (e.key == "finished") {
+                            finishedR1 = e.val();
+                            return;
+                        }
+                        if (e.key == "possession") {
+                            var valHome = validatePossession('home', e.val().away, e.val().home);
+                            var valAway = validatePossession('away', e.val().away, e.val().home);
+                            var arrHome = e.val().home.split(":");
+                            var arrAway = e.val().away.split(":");
+                            hoursR1 = Number(arrHome[0]); minutesR1 = Number(arrHome[1]); secondsR1 = Number(arrHome[2]);
+                            hoursawayR1 = Number(arrAway[0]); minutesawayR1 = Number(arrAway[1]); secondsawayR1 = Number(arrAway[2]);
+                            var checkt = (tR1 != null) ? "none" : "inline-block";
+                            var checktforpause = (tR1 != null) ? "inline-block" : "none";
+                            var checkaway = (tawayR1 != null) ? "none" : "inline-block";
+                            var checkawayforpause = (tawayR1 != null) ? "inline-block" : "none";
 
-                        arrPossession += '<tr>';
-                        arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">' + valHome + '</span></td>';
-                        arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timehomeR1"><time>' + e.val().home + '</span></td>';
-                        arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
-                        arrPossession += '<img title="Bắt đầu" onclick="starthomeAction(\'round1\')" style="height: 40px; width: 40px;cursor:pointer; display:' + checkt + ' " id="starthome" class="img_delete img_starthomeR1" src="img/play.png" />';
-                        arrPossession += '<img title="Dừng" style="height: 40px; width: 40px;cursor:pointer; display:' + checktforpause + '" class="img_delete img_pausehomeR1" src="img/pausered.png"/>';
-                        arrPossession += '</td>';
-                        arrPossession += '<td style="width: auto; text-align: center; padding: 5px 0px;">Kiểm soát bóng</td>';
-                        arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
-                        arrPossession += '<img title="Bắt đầu" onclick="startawayAction(\'round1\')" style="height: 40px; width: 40px;cursor:pointer;  display:' + checkaway + '" class="img_delete img_startawayR1" src="img/play.png"/>';
-                        arrPossession += '<img title="Dừng" style="height: 40px; width: 40px;cursor:pointer; display:' + checkawayforpause + '" class="img_delete img_pauseawayR1" src="img/pausered.png"/>';
-                        arrPossession += '</td>';
-                        arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timeraway" ><time>' + e.val().away + '</time></span></td>';
-                        arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">' + valAway + '</span></td>';
-                        arrPossession += '</tr>';
-                        arrPossession += '<tr><td colspan="8" style="padding: 5px 0px; text-align: center;"><img title="" onclick="pauseTime(\'round1\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/pausered.png"/></td></tr>';
-                    }
-                    else {
+                            arrPossession += '<tr>';
+                            arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">' + valHome + '</span></td>';
+                            arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timehomeR1"><time>' + e.val().home + '</span></td>';
+                            arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
+                            arrPossession += '<img title="Bắt đầu" onclick="starthomeAction(\'round1\')" style="height: 40px; width: 40px;cursor:pointer; display:' + checkt + ' " id="starthome" class="img_delete img_starthomeR1" src="img/play.png" />';
+                            arrPossession += '<img title="Dừng" style="height: 40px; width: 40px;cursor:pointer; display:' + checktforpause + '" class="img_delete img_pausehomeR1" src="img/pausered.png"/>';
+                            arrPossession += '</td>';
+                            arrPossession += '<td style="width: auto; text-align: center; padding: 5px 0px;">Kiểm soát bóng</td>';
+                            arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
+                            arrPossession += '<img title="Bắt đầu" onclick="startawayAction(\'round1\')" style="height: 40px; width: 40px;cursor:pointer;  display:' + checkaway + '" class="img_delete img_startawayR1" src="img/play.png"/>';
+                            arrPossession += '<img title="Dừng" style="height: 40px; width: 40px;cursor:pointer; display:' + checkawayforpause + '" class="img_delete img_pauseawayR1" src="img/pausered.png"/>';
+                            arrPossession += '</td>';
+                            arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timeraway" ><time>' + e.val().away + '</time></span></td>';
+                            arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">' + valAway + '</span></td>';
+                            arrPossession += '</tr>';
+                            arrPossession += '<tr><td colspan="8" style="padding: 5px 0px; text-align: center;"><img title="" onclick="pauseTime(\'round1\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/pausered.png"/></td></tr>';
+                        }
+
                         if (e.key == "corners") {
                             corners += '<tr>';
                             corners += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round1\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
@@ -793,8 +799,7 @@
                             fouls += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round1\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
                             fouls += '</tr>';
                         }
-                        if (e.key == "goals")
-                        {
+                        if (e.key == "goals") {
                             goals += '<tr>';
                             goals += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round1\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
                             goals += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
@@ -860,11 +865,97 @@
                             yellowcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round1\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
                             yellowcard += '</tr>';
                         }
-                        //arrStr = arrStr + goals + shots + shotsontarget + fouls + yellowcard + redcard + offsides + corners; 
-                    }
-                });
-                arrStr = arrStr + goals + shots + shotsontarget + fouls + yellowcard + redcard + offsides + corners + arrPossession;
-                arrStr += '  </table>';
+                    });
+                    arrStr = arrStr + goals + shots + shotsontarget + fouls + yellowcard + redcard + offsides + corners + arrPossession;
+                    arrStr += '  </table>';
+                }
+                else
+                {
+                    arrStr += '<table style="width: 50%;margin-left: 25%;  margin-bottom: 30px;" class="tblGameDetail">';
+                    arrStr += '<tr><td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;"></td><td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Đội nhà</td><td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Đội khách</td></tr>';
+                    snapshot.forEach(function (e) {
+                        if (e.key == "timematch") {
+                            $(".timeMatchRoundAll").html(snapshot.val().timematch);
+                            return;
+                        }
+                        if (e.key == "finished") {
+                            //finished = e.val();
+                            return;
+                        }
+                        if (e.key == "possession") {
+                            var valHome = validatePossession('home', e.val().away, e.val().home);
+                            var valAway = validatePossession('away', e.val().away, e.val().home);
+                            var arrHome = e.val().home.split(":");
+                            var arrAway = e.val().away.split(":");
+                            hours = Number(arrHome[0]); minutes = Number(arrHome[1]); seconds = Number(arrHome[2]);
+                            hoursaway = Number(arrAway[0]); minutesaway = Number(arrAway[1]); secondsaway = Number(arrAway[2]);
+                            arrPossession += '<tr>';
+                            arrPossession += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Kiểm soát bóng</td>';
+                            arrPossession += '<td style="width: 15%; height: 50px; padding: 5px 0px;"><span style="float: left; padding-left: 20%">' + e.val().home + '</span><span style="float: right; padding-right: 20%">' + valHome + '</span></td>';
+                            arrPossession += '<td style="width: 15%; height: 50px; padding: 5px 0px;"><span style="float: left; padding-left: 20%">' + e.val().away + '</span><span style="float: right; padding-right: 20%">' + valAway + '</span></td>';
+                            arrPossession += '</tr>';
+                        }
+                        if (e.key == "corners") {
+                            corners += '<tr>';
+                            corners += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Phạt góc</td>';
+                            corners += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            corners += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                            corners += '</tr>';
+                        }
+                        if (e.key == "fouls") {
+                            fouls += '<tr>';
+                            fouls += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Phạm lỗi</td>';
+                            fouls += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            fouls += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                            fouls += '</tr>';
+                        }
+                        if (e.key == "goals") {
+                            goals += '<tr>';
+                            goals += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Bàn thắng</td>';
+                            goals += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            goals += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                            goals += '</tr>';
+                        }
+                        if (e.key == "offsides") {
+                            offsides += '<tr>';
+                            offsides += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Việt vị</td>';
+                            offsides += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            offsides += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                            offsides += '</tr>';
+                        }
+                        if (e.key == "redcard") {
+                            redcard += '<tr>';
+                            redcard += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Thẻ đỏ</td>';
+                            redcard += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            redcard += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                            redcard += '</tr>';
+                        }
+                        if (e.key == "shots") {
+                            shots += '<tr>';
+                            shots += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Cú sút</td>';
+                            shots += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            shots += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                            shots += '</tr>';
+                        }
+                        if (e.key == "shotsontarget") {
+                            shotsontarget += '<tr>';
+                            shotsontarget += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Cú sút trúng đích</td>';
+                            shotsontarget += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            shotsontarget += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                            shotsontarget += '</tr>';
+                        }
+                        if (e.key == "yellowcard") {
+                            yellowcard += '<tr>';
+                            yellowcard += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Thẻ vàng</td>';
+                            yellowcard += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            yellowcard += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                            yellowcard += '</tr>';
+                        }
+                    });
+                    arrStr = arrStr + goals + shots + shotsontarget + fouls + yellowcard + redcard + offsides + corners + arrPossession;
+                    arrStr += '  </table>';
+                }
+                
                 $('.detailRound1').html(arrStr);
             });
             // Thông tin hiệp 2
@@ -880,143 +971,232 @@
                 var shots = "";
                 var shotsontarget = "";
                 var yellowcard = "";
-                arrStr += '<table style="width: 96%;margin-left: 2%;margin-right: 2%;  margin-bottom: 30px;" class="tblGameDetail">';
-                snapshot.forEach(function (e) {
-                    if (e.key == "timematch") {
-                        $(".timeMatchRound2").html(snapshot.val().timematch);
-                        if (snapshot.val().timematch != "00:00:00")
-                            startedR2 = "1";
-                        var arrMatch = snapshot.val().timematch.split(":");
-                        hoursmatchR2 = Number(arrMatch[0]); minutesmatchR2 = Number(arrMatch[1]); secondsmatchR2 = Number(arrMatch[2]);
-                        return;
-                    }
-                    if (e.key == "finished") {
-                        finishedR2 = e.val();
-                        return;
-                    }
-                    if (e.key == "possession") {
-                        var valHome = validatePossession('home', e.val().away, e.val().home);
-                        var valAway = validatePossession('away', e.val().away, e.val().home);
-                        var arrHome = e.val().home.split(":");
-                        var arrAway = e.val().away.split(":");
-                        hoursR2 = Number(arrHome[0]); minutesR2 = Number(arrHome[1]); secondsR2 = Number(arrHome[2]);
-                        hoursawayR2 = Number(arrAway[0]); minutesawayR2 = Number(arrAway[1]); secondsawayR2 = Number(arrAway[2]);
-                        var checkt = (tR2 != null) ? "none" : "inline-block";
-                        var checktforpause = (tR2 != null) ? "inline-block" : "none";
-                        var checkaway = (tawayR2 != null) ? "none" : "inline-block";
-                        var checkawayforpause = (tawayR2 != null) ? "inline-block" : "none";
+                if (role != "visitor")
+                {
+                    arrStr += '<table style="width: 96%;margin-left: 2%;margin-right: 2%;  margin-bottom: 30px;" class="tblGameDetail">';
+                    snapshot.forEach(function (e) {
+                        if (e.key == "timematch") {
+                            $(".timeMatchRound2").html(snapshot.val().timematch);
+                            if (snapshot.val().timematch != "00:00:00")
+                                startedR2 = "1";
+                            var arrMatch = snapshot.val().timematch.split(":");
+                            hoursmatchR2 = Number(arrMatch[0]); minutesmatchR2 = Number(arrMatch[1]); secondsmatchR2 = Number(arrMatch[2]);
+                            return;
+                        }
+                        if (e.key == "finished") {
+                            finishedR2 = e.val();
+                            return;
+                        }
+                        if (e.key == "possession") {
+                            var valHome = validatePossession('home', e.val().away, e.val().home);
+                            var valAway = validatePossession('away', e.val().away, e.val().home);
+                            var arrHome = e.val().home.split(":");
+                            var arrAway = e.val().away.split(":");
+                            hoursR2 = Number(arrHome[0]); minutesR2 = Number(arrHome[1]); secondsR2 = Number(arrHome[2]);
+                            hoursawayR2 = Number(arrAway[0]); minutesawayR2 = Number(arrAway[1]); secondsawayR2 = Number(arrAway[2]);
+                            var checkt = (tR2 != null) ? "none" : "inline-block";
+                            var checktforpause = (tR2 != null) ? "inline-block" : "none";
+                            var checkaway = (tawayR2 != null) ? "none" : "inline-block";
+                            var checkawayforpause = (tawayR2 != null) ? "inline-block" : "none";
 
-                        arrPossession += '<tr>';
-                        arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">' + valHome + '</span></td>';
-                        arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timehomeR2"><time>' + e.val().home + '</span></td>';
-                        arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
-                        arrPossession += '<img title="Bắt đầu" onclick="starthomeAction(\'round2\')" style="height: 40px; width: 40px;cursor:pointer; display:' + checkt + ' " id="starthome" class="img_delete img_starthomeR2" src="img/play.png" />';
-                        arrPossession += '<img title="Dừng" style="height: 40px; width: 40px;cursor:pointer; display:' + checktforpause + '" class="img_delete img_pausehomeR2" src="img/pausered.png"/>';
-                        arrPossession += '</td>';
-                        arrPossession += '<td style="width: auto; text-align: center; padding: 5px 0px;">Kiểm soát bóng</td>';
-                        arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
-                        arrPossession += '<img title="Bắt đầu" onclick="startawayAction(\'round2\')" style="height: 40px; width: 40px;cursor:pointer;  display:' + checkaway + '" class="img_delete img_startawayR2" src="img/play.png"/>';
-                        arrPossession += '<img title="Dừng" style="height: 40px; width: 40px;cursor:pointer; display:' + checkawayforpause + '" class="img_delete img_pauseawayR2" src="img/pausered.png"/>';
-                        arrPossession += '</td>';
-                        arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timeraway" ><time>' + e.val().away + '</time></span></td>';
-                        arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">' + valAway + '</span></td>';
-                        arrPossession += '</tr>';
-                        arrPossession += '<tr><td colspan="8" style="padding: 5px 0px; text-align: center;"><img title="" onclick="pauseTime(\'round2\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/pausered.png"/></td></tr>';
-                    }
-                    else {
+                            arrPossession += '<tr>';
+                            arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">' + valHome + '</span></td>';
+                            arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timehomeR2"><time>' + e.val().home + '</span></td>';
+                            arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
+                            arrPossession += '<img title="Bắt đầu" onclick="starthomeAction(\'round2\')" style="height: 40px; width: 40px;cursor:pointer; display:' + checkt + ' " id="starthome" class="img_delete img_starthomeR2" src="img/play.png" />';
+                            arrPossession += '<img title="Dừng" style="height: 40px; width: 40px;cursor:pointer; display:' + checktforpause + '" class="img_delete img_pausehomeR2" src="img/pausered.png"/>';
+                            arrPossession += '</td>';
+                            arrPossession += '<td style="width: auto; text-align: center; padding: 5px 0px;">Kiểm soát bóng</td>';
+                            arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;">';
+                            arrPossession += '<img title="Bắt đầu" onclick="startawayAction(\'round2\')" style="height: 40px; width: 40px;cursor:pointer;  display:' + checkaway + '" class="img_delete img_startawayR2" src="img/play.png"/>';
+                            arrPossession += '<img title="Dừng" style="height: 40px; width: 40px;cursor:pointer; display:' + checkawayforpause + '" class="img_delete img_pauseawayR2" src="img/pausered.png"/>';
+                            arrPossession += '</td>';
+                            arrPossession += '<td style="width: 15%; text-align: center; padding: 5px 0px;"><span id="timeraway" ><time>' + e.val().away + '</time></span></td>';
+                            arrPossession += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><span class="possessionaway">' + valAway + '</span></td>';
+                            arrPossession += '</tr>';
+                            arrPossession += '<tr><td colspan="8" style="padding: 5px 0px; text-align: center;"><img title="" onclick="pauseTime(\'round2\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/pausered.png"/></td></tr>';
+                        }
+                        else {
+                            if (e.key == "corners") {
+                                corners += '<tr>';
+                                corners += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                corners += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                                corners += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                corners += '<td style="width: auto; text-align: center; padding: 5px 0px;">Phạt góc</td>';
+                                corners += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                corners += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                                corners += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                corners += '</tr>';
+                            }
+                            if (e.key == "fouls") {
+                                fouls += '<tr>';
+                                fouls += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                fouls += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                                fouls += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                fouls += '<td style="width: auto; text-align: center; padding: 5px 0px;">Phạm lỗi</td>';
+                                fouls += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                fouls += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                                fouls += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                fouls += '</tr>';
+                            }
+                            if (e.key == "goals") {
+                                goals += '<tr>';
+                                goals += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                goals += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                                goals += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                goals += '<td style="width: auto; text-align: center; padding: 5px 0px;">Bàn thắng</td>';
+                                goals += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                goals += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                                goals += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                goals += '</tr>';
+                            }
+                            if (e.key == "offsides") {
+                                offsides += '<tr>';
+                                offsides += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                offsides += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                                offsides += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                offsides += '<td style="width: auto; text-align: center; padding: 5px 0px;">Việt vị</td>';
+                                offsides += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                offsides += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                                offsides += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                offsides += '</tr>';
+                            }
+                            if (e.key == "redcard") {
+                                redcard += '<tr>';
+                                redcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                redcard += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                                redcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                redcard += '<td style="width: auto; text-align: center; padding: 5px 0px;">Thẻ đỏ</td>';
+                                redcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                redcard += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                                redcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                redcard += '</tr>';
+                            }
+                            if (e.key == "shots") {
+                                shots += '<tr>';
+                                shots += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                shots += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                                shots += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                shots += '<td style="width: auto; text-align: center; padding: 5px 0px;">Cú sút</td>';
+                                shots += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                shots += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                                shots += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                shots += '</tr>';
+                            }
+                            if (e.key == "shotsontarget") {
+                                shotsontarget += '<tr>';
+                                shotsontarget += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                shotsontarget += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                                shotsontarget += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                shotsontarget += '<td style="width: auto; text-align: center; padding: 5px 0px;">Cú sút trúng đích</td>';
+                                shotsontarget += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                shotsontarget += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                                shotsontarget += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                shotsontarget += '</tr>';
+                            }
+                            if (e.key == "yellowcard") {
+                                yellowcard += '<tr>';
+                                yellowcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                yellowcard += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                                yellowcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                yellowcard += '<td style="width: auto; text-align: center; padding: 5px 0px;">Thẻ vàng</td>';
+                                yellowcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
+                                yellowcard += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
+                                yellowcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                                yellowcard += '</tr>';
+                            }
+                        }
+
+                    });
+                    arrStr = arrStr + goals + shots + shotsontarget + fouls + yellowcard + redcard + offsides + corners + arrPossession;
+                    arrStr += '  </table>';
+                }
+                else {
+                    arrStr += '<table style="width: 50%;margin-left: 25%;  margin-bottom: 30px;" class="tblGameDetail">';
+                    arrStr += '<tr><td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;"></td><td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Đội nhà</td><td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Đội khách</td></tr>';
+                    snapshot.forEach(function (e) {
+                        if (e.key == "timematch") {
+                            $(".timeMatchRoundAll").html(snapshot.val().timematch);
+                            return;
+                        }
+                        if (e.key == "finished") {
+                            //finished = e.val();
+                            return;
+                        }
+                        if (e.key == "possession") {
+                            var valHome = validatePossession('home', e.val().away, e.val().home);
+                            var valAway = validatePossession('away', e.val().away, e.val().home);
+                            var arrHome = e.val().home.split(":");
+                            var arrAway = e.val().away.split(":");
+                            hours = Number(arrHome[0]); minutes = Number(arrHome[1]); seconds = Number(arrHome[2]);
+                            hoursaway = Number(arrAway[0]); minutesaway = Number(arrAway[1]); secondsaway = Number(arrAway[2]);
+                            arrPossession += '<tr>';
+                            arrPossession += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Kiểm soát bóng</td>';
+                            arrPossession += '<td style="width: 15%; height: 50px; padding: 5px 0px;"><span style="float: left; padding-left: 20%">' + e.val().home + '</span><span style="float: right; padding-right: 20%">' + valHome + '</span></td>';
+                            arrPossession += '<td style="width: 15%; height: 50px; padding: 5px 0px;"><span style="float: left; padding-left: 20%">' + e.val().away + '</span><span style="float: right; padding-right: 20%">' + valAway + '</span></td>';
+                            arrPossession += '</tr>';
+                        }
                         if (e.key == "corners") {
                             corners += '<tr>';
-                            corners += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            corners += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
-                            corners += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
-                            corners += '<td style="width: auto; text-align: center; padding: 5px 0px;">Phạt góc</td>';
-                            corners += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            corners += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
-                            corners += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                            corners += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Phạt góc</td>';
+                            corners += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            corners += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
                             corners += '</tr>';
                         }
                         if (e.key == "fouls") {
                             fouls += '<tr>';
-                            fouls += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            fouls += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
-                            fouls += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
-                            fouls += '<td style="width: auto; text-align: center; padding: 5px 0px;">Phạm lỗi</td>';
-                            fouls += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            fouls += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
-                            fouls += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                            fouls += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Phạm lỗi</td>';
+                            fouls += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            fouls += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
                             fouls += '</tr>';
                         }
                         if (e.key == "goals") {
                             goals += '<tr>';
-                            goals += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            goals += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
-                            goals += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
-                            goals += '<td style="width: auto; text-align: center; padding: 5px 0px;">Bàn thắng</td>';
-                            goals += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            goals += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
-                            goals += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                            goals += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Bàn thắng</td>';
+                            goals += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            goals += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
                             goals += '</tr>';
                         }
                         if (e.key == "offsides") {
                             offsides += '<tr>';
-                            offsides += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            offsides += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
-                            offsides += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
-                            offsides += '<td style="width: auto; text-align: center; padding: 5px 0px;">Việt vị</td>';
-                            offsides += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            offsides += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
-                            offsides += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                            offsides += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Việt vị</td>';
+                            offsides += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            offsides += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
                             offsides += '</tr>';
                         }
                         if (e.key == "redcard") {
                             redcard += '<tr>';
-                            redcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            redcard += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
-                            redcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
-                            redcard += '<td style="width: auto; text-align: center; padding: 5px 0px;">Thẻ đỏ</td>';
-                            redcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            redcard += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
-                            redcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                            redcard += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Thẻ đỏ</td>';
+                            redcard += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            redcard += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
                             redcard += '</tr>';
                         }
                         if (e.key == "shots") {
                             shots += '<tr>';
-                            shots += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            shots += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
-                            shots += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
-                            shots += '<td style="width: auto; text-align: center; padding: 5px 0px;">Cú sút</td>';
-                            shots += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            shots += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
-                            shots += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                            shots += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Cú sút</td>';
+                            shots += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            shots += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
                             shots += '</tr>';
                         }
                         if (e.key == "shotsontarget") {
                             shotsontarget += '<tr>';
-                            shotsontarget += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            shotsontarget += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
-                            shotsontarget += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
-                            shotsontarget += '<td style="width: auto; text-align: center; padding: 5px 0px;">Cú sút trúng đích</td>';
-                            shotsontarget += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            shotsontarget += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
-                            shotsontarget += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                            shotsontarget += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Cú sút trúng đích</td>';
+                            shotsontarget += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            shotsontarget += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
                             shotsontarget += '</tr>';
                         }
                         if (e.key == "yellowcard") {
                             yellowcard += '<tr>';
-                            yellowcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            yellowcard += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
-                            yellowcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'home\',\'' + e.key + '\',\'' + (Number(e.val().home) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
-                            yellowcard += '<td style="width: auto; text-align: center; padding: 5px 0px;">Thẻ vàng</td>';
-                            yellowcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Giảm" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) - 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/remove.png"/></td>';
-                            yellowcard += '<td style="width: 15%; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
-                            yellowcard += '<td style="width: 10%; padding: 5px 0px; text-align: center;"><img title="Tăng" onclick="updateGameDetails(\'round2\',\'away\',\'' + e.key + '\',\'' + (Number(e.val().away) + 1) + '\')" style="height: 40px; width: 40px;cursor:pointer;" class="img_delete" src="img/plus.png"/></td>';
+                            yellowcard += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">Thẻ vàng</td>';
+                            yellowcard += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().home + '</td>';
+                            yellowcard += '<td style="width: 15%; height: 50px; text-align: center; padding: 5px 0px;">' + e.val().away + '</td>';
                             yellowcard += '</tr>';
                         }
-                    }
-
-                });
-                arrStr = arrStr + goals + shots + shotsontarget + fouls + yellowcard + redcard + offsides + corners + arrPossession;
-                arrStr += '  </table>';
+                    });
+                    arrStr = arrStr + goals + shots + shotsontarget + fouls + yellowcard + redcard + offsides + corners + arrPossession;
+                    arrStr += '  </table>';
+                }
+                
                 $('.detailRound2').html(arrStr);
             });
             // Thông tin all
